@@ -1,0 +1,206 @@
+<!DOCTYPE html><html lang="en"><head>
+	<meta name="generator" content="Hugo 0.163.2">
+    <meta charset="utf-8">
+<title>Guide for writing markdown slides</title>
+<meta name="description" content="A Hugo theme for creating Reveal.js presentations">
+
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"><link rel="stylesheet" href="/Personalized-Template-Hugo-Reveal-Slides/reveal-js/dist/reset.css">
+<link rel="stylesheet" href="/Personalized-Template-Hugo-Reveal-Slides/reveal-js/dist/reveal.css">
+  <link rel="stylesheet" href="/Personalized-Template-Hugo-Reveal-Slides/css/custom-theme.min.27c850f45a44c4595b156fdb0de45e8a831d721bfa01d5ca78cd6ce207106973.css" id="theme"><link rel="stylesheet" href="/Personalized-Template-Hugo-Reveal-Slides/highlight-js/solarized-dark.min.css">
+<link href="https://fonts.googleapis.com/css?family=Roboto Mono" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css?family=Oxygen Mono" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css?family=Ubuntu Mono" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
+<link href="https://cdn.jsdelivr.net/gh/DanySK/css-blur-animation/blur.css" rel="stylesheet" crossorigin="anonymous">
+
+<script src="https://kit.fontawesome.com/81ac037be0.js" crossorigin="anonymous"></script>
+<script type="text/javascript" src="https://unpkg.com/qr-code-styling@1.5.0/lib/qr-code-styling.js"></script>
+
+  </head>
+  <body>
+    
+    <div class="reveal">
+      <div class="slides">
+  
+
+    <section><h1 id="title">Title</h1>
+<p><a href="mailto:angela.cortecchia@unibo.it"><strong>Angela Cortecchia</strong></a></p>
+<div style="text-align: center; width: 100%;">
+<img src="example-background.svg" style="width: 40%">
+</div>
+</section>
+
+<section data-noprocess="" data-shortcode-slide="" data-background-image="https://angelacorte.github.io/Personalized-Template-Hugo-Reveal-Slides/images/smartstation.png" data-background-opacity="0.55">
+  
+<div class="" style="background-color: #ffffffc0; border-radius: 20px; padding: 20px; margin: auto; 
+     ZgotmplZ">
+    <h1 id="base1">Base<small>1</small></h1>
+<div class="container w-100 m-0 p-0">
+    <div class="row "><div class="col "><h3 id="first-col">first col</h3>
+<ul>
+    <li class="fragment" data-fragment-index="0">who</li>
+    <li class="fragment" data-fragment-index="1">are</li>
+    <li class="fragment" data-fragment-index="2">them</li>
+</ul>
+</div>
+<div class="col "><h3 id="second-col">second col</h3>
+<ul>
+    <li class="fragment" data-fragment-index="0">pippo</li>
+    <li class="fragment" data-fragment-index="1">pluto</li>
+    <li class="fragment" data-fragment-index="2">paperino</li>
+</ul>
+</div>
+</div>
+</div>
+<div>
+<small style="text-align: left">
+<br>
+[1] Beal, J., Pianini, D., Viroli, M. "Aggregate Programming for the Internet of Things." 2015.<br>
+</small>
+</div>
+
+</div>
+
+</section>
+
+  
+
+
+</div>
+      
+
+    </div>
+<script type="text/javascript" src="/Personalized-Template-Hugo-Reveal-Slides/reveal-hugo/object-assign.js"></script>
+
+<a href="/Personalized-Template-Hugo-Reveal-Slides/reveal-js/dist/print/" id="print-location" style="display: none;"></a>
+
+<script type="application/json" id="reveal-hugo-site-params">{"custom_theme":"custom-theme.scss","custom_theme_compile":true,"custom_theme_options":{"enablesourcemap":true,"targetpath":"css/custom-theme.css"},"height":"1080","highlight_theme":"solarized-dark","history":true,"mermaid":[{}],"slide_number":true,"theme":"league","transition":"slide","transition_speed":"fast","width":"1920"}</script>
+<script type="application/json" id="reveal-hugo-page-params">null</script>
+
+<script src="/Personalized-Template-Hugo-Reveal-Slides/reveal-js/dist/reveal.js"></script>
+
+
+  
+  
+  <script type="text/javascript" src="/Personalized-Template-Hugo-Reveal-Slides/reveal-js/plugin/markdown/markdown.js"></script>
+  
+  <script type="text/javascript" src="/Personalized-Template-Hugo-Reveal-Slides/reveal-js/plugin/highlight/highlight.js"></script>
+  
+  <script type="text/javascript" src="/Personalized-Template-Hugo-Reveal-Slides/reveal-js/plugin/zoom/zoom.js"></script>
+  
+  <script type="text/javascript" src="/Personalized-Template-Hugo-Reveal-Slides/reveal-js/plugin/notes/notes.js"></script>
+  
+  
+  <script type="text/javascript" src="/Personalized-Template-Hugo-Reveal-Slides/reveal-js/plugin/notes/notes.js"></script>
+
+
+
+
+<script type="text/javascript">
+  
+  
+  function camelize(map) {
+    if (map) {
+      Object.keys(map).forEach(function(k) {
+        newK = k.replace(/(\_\w)/g, function(m) { return m[1].toUpperCase() });
+        if (newK != k) {
+          map[newK] = map[k];
+          delete map[k];
+        }
+      });
+    }
+    return map;
+  }
+
+  var revealHugoDefaults = { center: true, controls: true, history: true, progress: true, transition: "slide" };
+
+  var revealHugoPlugins = {
+    plugins: [ RevealMarkdown, RevealHighlight, RevealNotes, RevealZoom ]
+   };
+  var revealHugoSiteParams = JSON.parse(document.getElementById('reveal-hugo-site-params').innerHTML);
+  var revealHugoPageParams = JSON.parse(document.getElementById('reveal-hugo-page-params').innerHTML);
+  
+  var options = Object.assign({},
+    camelize(revealHugoDefaults),
+    camelize(revealHugoSiteParams),
+    camelize(revealHugoPageParams),
+    camelize(revealHugoPlugins));
+  Reveal.initialize(options);
+</script>
+
+
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+
+
+
+
+
+    <script>
+    MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']]
+      },
+      svg: {
+        fontCache: 'global'
+      }
+    };
+</script>
+
+<script type="text/javascript" id="MathJax-script" async="" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js">
+</script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm" crossorigin="anonymous"></script>
+
+<script>
+  if (/.*?(\?|&)print-pdf/.test(window.location.toString())) {
+      var ytVideos = document.getElementsByTagName("iframe")
+      for (let i = 0; i < ytVideos.length; i++) {
+          var videoFrame = ytVideos[i]
+          var isYouTube = /^https?:\/\/(www.)youtube\.com\/.*/.test(videoFrame.src)
+          if (isYouTube) {
+              console.log(`Removing ${videoFrame.src}`)
+              var parent = videoFrame.parentElement
+              videoFrame.remove()
+              var p = document.createElement('p')
+              p.append(
+                  document.createTextNode(
+                      "There was an embedded video here, but it is disabled in the printed version of the slides."
+                  )
+              )
+              p.append(document.createElement('br'))
+              p.append(
+                  document.createTextNode(
+                      `Visit instead ${
+                          videoFrame.src
+                      } or ${
+                          videoFrame.src.replace(
+                              /(^https?:\/\/(www.)youtube\.com)\/(embed\/)(\w+).*/,
+                              "https://www.youtube.com/watch?v=$4"
+                          )
+                      }`
+                  )
+              )
+              parent.appendChild(p)
+          }
+      }
+  }
+</script>
+
+
+    
+  
+
+</body></html>
