@@ -1,6 +1,6 @@
-baseURL = "https://angelacorte.github.io/Personalized-Template-Hugo-Reveal-Slides"
+baseURL = "https://angelacorte.github.io/presentation-2026-dcoss-ac-dpf/"
 languageCode = "en-us"
-title = "A Hugo theme for creating Reveal.js presentations"
+title = "Field-Based Distributed Particle Filtering"
 disableKinds = ["sitemap", "RSS"]
 theme = "reveal-hugo"
 publishDir = "build"
@@ -67,5 +67,3 @@ enableSourceMap = true
   [security.http]
     methods = ['(?i)GET|POST']
     urls = ['.*']
-
-
