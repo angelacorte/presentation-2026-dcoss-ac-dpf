@@ -1,0 +1,7 @@
+{{ $title := .Get "title" }}
+<div class="bridge-flow-wrap">
+  {{ with $title }}<div class="bridge-flow-title">{{ . }}</div>{{ end }}
+  <div class="bridge-flow">
+    {{ .Inner }}
+  </div>
+</div>

@@ -1,0 +1,9 @@
+{{ $title := .Get "title" }}
+{{ $tone := .Get "tone" | default "blue" }}
+{{ $compact := .Get "compact" }}
+<div class="framework-card{{ with $tone }} is-{{ . }}{{ end }}{{ if $compact }} is-compact{{ end }}">
+  {{ with $title }}<div class="framework-card-title">{{ . }}</div>{{ end }}
+  <div class="framework-card-body">
+    {{ .Inner | markdownify }}
+  </div>
+</div>

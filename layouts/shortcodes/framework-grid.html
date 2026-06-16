@@ -1,0 +1,4 @@
+{{ $columns := .Get "columns" }}
+<div class="framework-grid{{ if eq $columns "2" }} is-two{{ end }}">
+  {{ .Inner }}
+</div>

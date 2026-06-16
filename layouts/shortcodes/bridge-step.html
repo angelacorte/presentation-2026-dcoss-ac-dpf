@@ -1,0 +1,6 @@
+{{ $title := .Get "title" }}
+{{ $note := .Get "note" }}
+<div class="bridge-step">
+  {{ with $title }}<div class="bridge-step-title">{{ . }}</div>{{ end }}
+  {{ with $note }}<div class="bridge-step-note">{{ . }}</div>{{ end }}
+</div>
