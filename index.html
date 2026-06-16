@@ -1,14 +1,14 @@
 <!DOCTYPE html><html lang="en"><head>
 	<meta name="generator" content="Hugo 0.163.2">
     <meta charset="utf-8">
-<title>Guide for writing markdown slides</title>
-<meta name="description" content="A Hugo theme for creating Reveal.js presentations">
+<title>Flexible Distributed Particle Filtering for the Internet of Things via Aggregate Computing</title>
+<meta name="description" content="DCOSS-IoT 2026 presentation">
 
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"><link rel="stylesheet" href="/Personalized-Template-Hugo-Reveal-Slides/reveal-js/dist/reset.css">
-<link rel="stylesheet" href="/Personalized-Template-Hugo-Reveal-Slides/reveal-js/dist/reveal.css">
-  <link rel="stylesheet" href="/Personalized-Template-Hugo-Reveal-Slides/css/custom-theme.min.27c850f45a44c4595b156fdb0de45e8a831d721bfa01d5ca78cd6ce207106973.css" id="theme"><link rel="stylesheet" href="/Personalized-Template-Hugo-Reveal-Slides/highlight-js/solarized-dark.min.css">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"><link rel="stylesheet" href="/presentation-2026-dcoss-ac-dpf/reveal-js/dist/reset.css">
+<link rel="stylesheet" href="/presentation-2026-dcoss-ac-dpf/reveal-js/dist/reveal.css">
+  <link rel="stylesheet" href="/presentation-2026-dcoss-ac-dpf/css/custom-theme.min.3d40d770fb88496e3f17c821f5c99ca3a4b0c2de73dfc7bd007d7829685062bd.css" id="theme"><link rel="stylesheet" href="/presentation-2026-dcoss-ac-dpf/highlight-js/solarized-dark.min.css">
 <link href="https://fonts.googleapis.com/css?family=Roboto Mono" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css?family=Oxygen Mono" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css?family=Ubuntu Mono" rel="stylesheet">
@@ -25,44 +25,411 @@
       <div class="slides">
   
 
-    <section><h1 id="title">Title</h1>
-<p><a href="mailto:angela.cortecchia@unibo.it"><strong>Angela Cortecchia</strong></a></p>
-<div style="text-align: center; width: 100%;">
-<img src="example-background.svg" style="width: 40%">
+    <section><h1 id="flexible-distributed-particle-filtering-for-the-internet-of-things-via-aggregate-computing">Flexible Distributed Particle Filtering for the Internet of Things via Aggregate Computing</h1>
+<p><a href="mailto:angela.cortecchia@unibo.it"><strong><span style="color: #bb2e29;">Angela Cortecchia</span></strong></a>,
+<a href="mailto:davide.domini@unibo.it">Davide Domini</a>,
+<a href="mailto:giovanni.ciatto@unibo.it">Giovanni Ciatto</a>,
+<a href="mailto:roby.casadei@unibo.it">Roberto Casadei</a>,
+<a href="mailto:danilo.pianini@unibo.it">Danilo Pianini</a>,
+and
+<a href="mailto:mirko.viroli@unibo.it">Mirko Viroli</a></p>
+<p>Department of Computer Science and Engineering (DISI)<br>
+Alma Mater Studiorum – University of Bologna - Cesena, Italy</p>
+<div style="text-align: center; width: 100%; margin-top: 1rem;">
+  <img src="./images/DIP INFORMATICA-SCIENZA E INGEGNERIA_DISI_EN.svg" style="width: 38%;">
 </div>
-</section>
+</section><section>
+<h1 id="motivation">Motivation</h1>
+<p>Estimating hidden state of dynamic systems from partial, noisy observations</p>
 
-<section data-noprocess="" data-shortcode-slide="" data-background-image="https://angelacorte.github.io/Personalized-Template-Hugo-Reveal-Slides/images/smartstation.png" data-background-opacity="0.55">
-  
-<div class="" style="background-color: #ffffffc0; border-radius: 20px; padding: 20px; margin: auto; 
-     ZgotmplZ">
-    <h1 id="base1">Base<small>1</small></h1>
 <div class="container w-100 m-0 p-0">
-    <div class="row "><div class="col "><h3 id="first-col">first col</h3>
-<ul>
-    <li class="fragment" data-fragment-index="0">who</li>
-    <li class="fragment" data-fragment-index="1">are</li>
-    <li class="fragment" data-fragment-index="2">them</li>
+    <div class="row "><div class="col "><h3 id="problem">Problem</h3>
+<p>Many cyber-physical systems rely on estimating <strong>hidden dynamical states over time</strong>.</p>
+<p>Examples include target tracking and environmental monitoring.</p>
+</div>
+<div class="col "><h3 id="constraint">Constraint</h3>
+<p>The state is <strong>not directly observable</strong>.</p>
+<p>We only receive noisy, partial, and spatially distributed measurements.</p>
+</div>
+</div>
+</div>
+<p>Core problem: <strong>reconstruct latent dynamics from uncertain observations</strong>.</p>
+</section><section>
+<h2 id="bayesian-inference">Bayesian Inference</h2>
+
+<div class="container w-100 m-0 p-0">
+    <div class="row "><div class="col "><ul>
+<li>Goal: estimate unknown parameters $\theta$ from observed data $D$</li>
+<li><strong>Prior</strong> $P(\theta)$: belief before observing data</li>
+<li><strong>Likelihood</strong> $P(D \mid \theta)$: compatibility between data and parameter</li>
+<li><strong>Posterior</strong> $P(\theta \mid D)$: updated belief after observing data</li>
 </ul>
 </div>
-<div class="col "><h3 id="second-col">second col</h3>
+<div class="col "><h3 id="bayes-rule">Bayes’ rule</h3>
+<p>$$
+P(\theta \mid D) =
+\frac{P(D \mid \theta) P(\theta)}{P(D)}
+$$</p>
+<p>Start from a prior belief, observe data, update the estimate.</p>
+</div>
+</div>
+</div>
+</section><section>
+<h1 id="from-bayesian-inference-to-particle-filters">From Bayesian Inference to Particle Filters</h1>
+
+<div class="container w-100 m-0 p-0">
+    <div class="row "><div class="col "><h3 id="filtering-objective">Filtering objective</h3>
+<p>In principle, Bayesian inference gives the full posterior:</p>
+<p>$$P(x_t \mid y_1, \dots, y_t)$$</p>
+<p>Where:</p>
 <ul>
-    <li class="fragment" data-fragment-index="0">pippo</li>
-    <li class="fragment" data-fragment-index="1">pluto</li>
-    <li class="fragment" data-fragment-index="2">paperino</li>
+<li>$y_1, \dots, y_t$ are the <strong>noisy observations</strong> up to time $t$</li>
+<li>$x_t$ is the <strong>hidden state</strong> at time $t$</li>
+</ul>
+</div>
+<div class="col "><h3 id="analytical-solution">Analytical solution</h3>
+<ul>
+<li>Linear dynamics</li>
+<li>Linear observation model</li>
+<li>Gaussian noise</li>
+<li>Posterior remains Gaussian</li>
+<li>Kalman filter applies</li>
+</ul>
+<h3 id="real-world-systems">Real-world systems</h3>
+<ul>
+<li>Nonlinear dynamics</li>
+<li>Non-Gaussian noise</li>
+<li>Complex or multimodal posterior</li>
+<li>Exact inference becomes intractable</li>
 </ul>
 </div>
 </div>
 </div>
-<div>
-<small style="text-align: left">
-<br>
-[1] Beal, J., Pianini, D., Viroli, M. "Aggregate Programming for the Internet of Things." 2015.<br>
-</small>
+</section><section>
+<h1 id="particle-filters">Particle Filters</h1>
+<p>Monte Carlo state estimation for nonlinear and non-Gaussian systems</p>
+</section><section>
+<h2 id="centralized-particle-filters">Centralized Particle Filters</h2>
+<h3 id="posterior-approximation">Posterior approximation</h3>
+<p>We estimate a hidden state $x_t$ from noisy observations $y_{1:t}$ by representing the posterior with weighted samples:</p>
+<p>$p(x_t \mid y_{1:t}) \approx \sum_i w_t^i \delta(x_t - x_t^i)$</p>
+<h3 id="one-filtering-iteration">One filtering iteration</h3>
+<ul>
+<li><strong>Prediction:</strong> Propagate each particle through the dynamical model.</li>
+<li><strong>Weighting:</strong> Evaluate each particle against the new observation.</li>
+<li><strong>Resampling:</strong> Keep plausible hypotheses and discard weak ones.</li>
+<li><strong>Estimate:</strong> Compute the state estimate from the weighted particles.</li>
+</ul>
+<p>In distributed settings, this machinery remains the same; the hard part becomes information coordination.</p>
+</section><section>
+<h1 id="distributed-particle-filters">Distributed Particle Filters</h1>
+<p>Filtering becomes a coordination problem</p>
+</section><section>
+<h2 id="why-distributed-particle-filters">Why Distributed Particle Filters?</h2>
+<h3 id="motivation-1">Motivation</h3>
+<p>In many networked systems, observations are collected by <strong>multiple spatially distributed agents</strong>.</p>
+<p>A centralized particle filter assumes all measurements are available in one place.</p>
+<h3 id="why-this-is-unrealistic">Why this is unrealistic</h3>
+<ul>
+<li>Limited bandwidth</li>
+<li>Energy constraints</li>
+<li>Latency</li>
+<li>Topology changes</li>
+<li>Node and link failures</li>
+</ul>
+<p>Main design question: <strong>how do we distribute filtering without losing too much estimation quality?</strong></p>
+</section><section>
+<h2 id="from-centralized-pf-to-distributed-pf">From Centralized PF to Distributed PF</h2>
+<h3 id="same-filtering-logic">Same filtering logic</h3>
+<ul>
+<li>Prediction</li>
+<li>Weighting</li>
+<li>Resampling</li>
+<li>State estimation</li>
+</ul>
+<h3 id="different-architecture">Different architecture</h3>
+<ul>
+<li>Measurements are local</li>
+<li>Communication is constrained</li>
+<li>No node may have full global information</li>
+<li>Information must be routed, fused, or summarized</li>
+</ul>
+<p>Hence, DPF is mainly a <strong>coordination problem on top of the PF machinery</strong>.</p>
+</section><section>
+<h2 id="a-high-level-taxonomy-of-dpf-architectures">A High-Level Taxonomy of DPF Architectures</h2>
+<h3 id="fusion-center">Fusion center</h3>
+<p>Local agents process measurements, then send local results to a central node for fusion.</p>
+<h3 id="leader-agent-based">Leader-agent based</h3>
+<p>A selected path or subset of nodes accumulates information and performs global estimation.</p>
+<h3 id="consensus-based">Consensus-based</h3>
+<p>All agents iteratively exchange information to obtain consistent local beliefs.</p>
+<p>Main trade-off: <strong>estimation quality vs communication burden vs robustness</strong>.</p>
+</section><section>
+<h2 id="state-estimation-of-dynamic-systems">State Estimation of Dynamic Systems</h2>
+<div style="text-align: center;">
+  <img src="./images/pfs.png" style="width: 88%;">
 </div>
+</section><section>
+<h2 id="fusion-center-based-dpf">Fusion Center-Based DPF</h2>
+<h3 id="architecture">Architecture</h3>
+<p>Each agent processes its own measurements locally. Local posteriors or local estimates are reported to a <strong>fusion center</strong>, which combines the received information and computes the global estimate.</p>
+<h3 id="why-attractive">Why attractive</h3>
+<ul>
+<li>Conceptually simple</li>
+<li>Easy to organize</li>
+<li>Global decision available in one place</li>
+</ul>
+<h3 id="typical-use-case">Typical use case</h3>
+<p>Applications where global knowledge is needed only at one node.</p>
+</section><section>
+<h2 id="fusion-center-based-dpf-pros-and-cons">Fusion Center-Based DPF: Pros and Cons</h2>
+<h3 id="advantages">Advantages</h3>
+<ul>
+<li>Simple architecture</li>
+<li>Easy fusion logic</li>
+<li>Often good estimation quality</li>
+<li>Natural with a central decision-maker</li>
+</ul>
+<h3 id="drawbacks">Drawbacks</h3>
+<ul>
+<li>Single point of failure</li>
+<li>Poor robustness against fusion-center faults</li>
+<li>High communication burden near the center</li>
+<li>Strong dependence on network topology</li>
+</ul>
+</section><section>
+<h2 id="reducing-the-burden-clustered--two-tier-architectures">Reducing the Burden: Clustered / Two-Tier Architectures</h2>
+<h3 id="two-tier-organization">Two-tier organization</h3>
+<ul>
+<li><strong>Sensors:</strong> Collect raw measurements or local summaries.</li>
+<li><strong>Cluster heads:</strong> Aggregate nearby sensor information.</li>
+<li><strong>Fusion center:</strong> Combines cluster-level information.</li>
+<li><strong>Global estimate:</strong> A single decision point remains.</li>
+</ul>
+<p>This reduces long-distance communication and avoids requiring every sensor to talk directly to the fusion center.</p>
+</section><section>
+<h2 id="leader-agent-based-dpf">Leader-Agent Based DPF</h2>
+<h3 id="key-idea">Key idea</h3>
+<p>No fixed fusion center is assumed. Instead, only a subset of agents is activated for global estimation, forming a <strong>leader-agent path</strong> along which information is accumulated and propagated.</p>
+<h3 id="design-intuition">Design intuition</h3>
+<p>Global estimation is not done by everyone: it is delegated to selected nodes, dynamically chosen in the network.</p>
+</section><section>
+<h2 id="leader-agent-based-dpf-pros-and-cons">Leader-Agent Based DPF: Pros and Cons</h2>
+<h3 id="advantages-1">Advantages</h3>
+<ul>
+<li>Avoids a permanently fixed central node</li>
+<li>Can reduce communication compared with fully decentralized schemes</li>
+<li>May exploit informative nodes more efficiently</li>
+</ul>
+<h3 id="drawbacks-1">Drawbacks</h3>
+<ul>
+<li>Performance depends on leader selection</li>
+<li>Accuracy and energy consumption are coupled to the selection policy</li>
+<li>Coordination overhead remains</li>
+<li>Leadership can be fragile</li>
+</ul>
+</section><section>
+<h2 id="consensus-based-dpf">Consensus-Based DPF</h2>
+<h3 id="architecture-1">Architecture</h3>
+<p>All agents participate in the filtering process. No fusion center and no privileged node are required.</p>
+<h3 id="high-level-intuition">High-level intuition</h3>
+<ul>
+<li><strong>Local beliefs:</strong> Each node starts from local information.</li>
+<li><strong>Exchange:</strong> Neighbors communicate iteratively.</li>
+<li><strong>Propagation:</strong> Information spreads through the network.</li>
+<li><strong>Consistency:</strong> Estimates become more globally informed.</li>
+</ul>
+</section><section>
+<h2 id="consensus-based-dpf-pros-and-cons">Consensus-Based DPF: Pros and Cons</h2>
+<h3 id="advantages-2">Advantages</h3>
+<ul>
+<li>High robustness to node failures</li>
+<li>Enhanced scalability</li>
+<li>Better adaptability to topology changes</li>
+<li>No single point of failure</li>
+</ul>
+<h3 id="drawbacks-2">Drawbacks</h3>
+<ul>
+<li>Heavier communication demand</li>
+<li>Possible delay due to consensus iterations</li>
+<li>Synchronization and consistency can become nontrivial</li>
+<li>Agreement may not be the real objective</li>
+</ul>
+</section><section>
+<h2 id="what-makes-dpf-hard-in-practice">What Makes DPF Hard in Practice?</h2>
+<h3 id="01-particles-are-costly">01. Particles are costly</h3>
+<p>Particle filters require many particles to represent the posterior.</p>
+<h3 id="02-networks-are-imperfect">02. Networks are imperfect</h3>
+<p>Quality is shaped by communication delays, packet drops, topology changes, and local computation limits.</p>
+<h3 id="03-trade-offs-dominate">03. Trade-offs dominate</h3>
+<p>DPF is always a compromise among accuracy, overhead, complexity, and robustness.</p>
+</section><section>
+<h2 id="what-should-we-be-careful-about">What Should We Be Careful About?</h2>
+<h3 id="cost-and-load">Cost and load</h3>
+<ul>
+<li>Communication cost</li>
+<li>Load imbalance</li>
+<li>Particle, weight, or likelihood exchange may dominate the whole method</li>
+</ul>
+<h3 id="network-behavior">Network behavior</h3>
+<ul>
+<li>Topology sensitivity</li>
+<li>Delay and asynchrony</li>
+<li>Node failures</li>
+</ul>
+<h3 id="robustness">Robustness</h3>
+<ul>
+<li>Special nodes introduce fragility</li>
+<li>Failure handling must be part of the design</li>
+</ul>
+<h3 id="information-granularity">Information granularity</h3>
+<p>Raw measurements, local posteriors, particles, and likelihood summaries have very different costs.</p>
+</section><section>
+<h2 id="a-design-space-view-of-dpf">A Design-Space View of DPF</h2>
+<h3 id="dpf-is-not-a-single-algorithmic-recipe">DPF is not a single algorithmic recipe</h3>
+<p>It is <strong>a family of solutions</strong> defined by a few major design choices: where fusion happens, who performs filtering, what information is exchanged, and how often coordination happens.</p>
+<h3 id="fc-fusion-center">FC. Fusion center</h3>
+<p>Simple but fragile.</p>
+<h3 id="la-leader-agent">LA. Leader-agent</h3>
+<p>Lighter but coordination-dependent.</p>
+<h3 id="cb-consensus-based">CB. Consensus-based</h3>
+<p>Robust but communication-heavy.</p>
+</section><section>
+<h1 id="a-field-based-perspective">A Field-Based Perspective</h1>
+<p>Flexible Distributed Particle Filtering for the Internet of Things via Aggregate Computing</p>
+<p><small>A. Cortecchia, D. Domini, G. Ciatto, R. Casadei, D. Pianini, M. Viroli</small></p>
+<p><small>Submitted to International Conference On Distributed Computing in Smart Systems and the Internet Of Things (DCOSS-IoT 2026)</small></p>
+</section><section>
+<h2 id="how-can-a-field-based-perspective-help-dpf">How Can a Field-Based Perspective Help DPF?</h2>
+<h3 id="main-point">Main point</h3>
+<p>The goal is <strong>not</strong> to introduce yet another DPF algorithm. The idea is to expose DPF as a <strong>configurable coordination problem</strong>.</p>
+<h3 id="filtering-logic">Filtering logic</h3>
+<ul>
+<li>Prediction</li>
+<li>Weighting</li>
+<li>Resampling</li>
+</ul>
+<h3 id="coordination-choices">Coordination choices</h3>
+<ul>
+<li>Where fusion happens</li>
+<li>What is exchanged</li>
+<li>How far information propagates</li>
+</ul>
+<p>The field-based view turns architectural assumptions into <strong>design parameters</strong>, rather than hard-coded algorithmic commitments.</p>
+</section><section>
+<h2 id="what-becomes-configurable">What Becomes Configurable?</h2>
+<h3 id="where-fusion-happens">Where fusion happens</h3>
+<p>Fixed fusion center, elected leader, or fully decentralized local filters.</p>
+<h3 id="what-is-exchanged">What is exchanged</h3>
+<p>Particles, weights, posterior summaries, likelihood surrogates, or raw measurements.</p>
+<h3 id="how-far-information-propagates">How far information propagates</h3>
+<p>Only local neighborhoods, selected regions, or the whole network.</p>
+<h3 id="who-is-active">Who is active</h3>
+<p>Everybody, only relevant regions, leaders, or partitions.</p>
+</section><section>
+<h2 id="aggregate-measurements">Aggregate Measurements</h2>
+<h3 id="a-useful-extra-degree-of-freedom">A useful extra degree of freedom</h3>
+<p>Instead of exchanging particles, each node can run its own local particle filter while the weighting step exploits an <strong>aggregated measurement function</strong> built from neighboring observations.</p>
+<p>$$
+\hat{y}<em>t =
+H</em>{\mathcal{N}(k)}
+\left(
+\left{ h_k(x_t, v_{k,t}) \right}_{k \in \mathcal{N}}
+\right)
+$$</p>
+<p>Nearby sensors collectively behave like a <strong>distributed sensor</strong>. This can be cheaper than exchanging particle sets.</p>
+</section><section>
+<h2 id="resilient-fusion-center-behavior-without-a-fixed-center">Resilient Fusion-Center Behavior Without a Fixed Center</h2>
+<h3 id="leader-based-fusion-as-a-field-level-behavior">Leader-based fusion as a field-level behavior</h3>
+<ul>
+<li><strong>Election:</strong> A leader is selected dynamically.</li>
+<li><strong>Fusion:</strong> The leader behaves as the current fusion center.</li>
+<li><strong>Failure:</strong> If the leader disappears, the role is released.</li>
+<li><strong>Self-healing:</strong> A new leader resumes the behavior.</li>
+</ul>
+<p>We can move along the spectrum between centralized simplicity and decentralized robustness through configuration.</p>
+</section><section>
+<h1 id="experimental-evaluation">Experimental Evaluation</h1>
+<p>Two target-tracking experiments in a distributed sensor network</p>
+</section><section>
+<h2 id="experimental-setup">Experimental Setup</h2>
+<h3 id="scenario">Scenario</h3>
+<ul>
+<li>Target tracking in a 2D space</li>
+<li>Static network of <strong>25 sensors</strong></li>
+<li>Sensors deployed on a perturbed spatial grid</li>
+<li>Non-linear target trajectory</li>
+</ul>
+<h3 id="execution">Execution</h3>
+<ul>
+<li>Signal quality degrades with distance</li>
+<li>Each sensor executes at <strong>1 Hz</strong></li>
+<li>Experiments last <strong>3000 simulated seconds</strong></li>
+<li>Each configuration uses <strong>100 random seeds</strong></li>
+</ul>
+</section><section>
+<h2 id="two-experiments">Two Experiments</h2>
+<h3 id="01-neighborhood-measurement-aggregation">01. Neighborhood measurement aggregation</h3>
+<p>Each node runs a local PF and aggregates neighboring measurements.</p>
+<h3 id="02-leader-based-fusion-center">02. Leader-based fusion center</h3>
+<p>One elected leader acts as fusion center, and leader failure is injected during execution.</p>
+<h3 id="03-common-question">03. Common question</h3>
+<p>How much coordination is enough to improve tracking without paying the full cost of particle exchange?</p>
+</section><section>
+<h2 id="experiment-1-local-pf--aggregated-measurements">Experiment 1: Local PF + Aggregated Measurements</h2>
+<h3 id="setup">Setup</h3>
+<p>Each sensor keeps its <strong>own local particle filter</strong>. No particle exchange occurs among neighbors. What changes is the <strong>measurement used for weighting</strong>.</p>
 
+<div class="container w-100 m-0 p-0">
+    <div class="row "><div class="col "><h3 id="main-variable">Main variable</h3>
+<p>$$
+|\mathcal{N}| \in {0, 1, 4, 7}
+$$</p>
 </div>
-
+<div class="col "><ul>
+<li>With very small neighborhoods, filters struggle to converge</li>
+<li>Increasing neighborhood size improves information quality</li>
+<li>Better measurements imply better trajectory reconstruction</li>
+</ul>
+</div>
+</div>
+</div>
+</section><section>
+<h2 id="experiment-1-trajectories">Experiment 1: Trajectories</h2>
+<div style="text-align: center;">
+  <img src="./images/trajectories.png" style="width: 98%;">
+</div>
+<p>Aggregating raw local observations can substantially improve weighting quality <strong>without exchanging particle sets</strong>.</p>
+</section><section>
+<h2 id="experiment-1-rmse">Experiment 1: RMSE</h2>
+<div style="text-align: center;">
+  <img src="./images/rmse.png" style="width: 70%;">
+</div>
+</section><section>
+<h2 id="experiment-2-elected-leader-as-fusion-center">Experiment 2: Elected Leader as Fusion Center</h2>
+<h3 id="setup-1">Setup</h3>
+<p>An elected leader plays the role of fusion center. Measurements are progressively aggregated toward the leader, and a <strong>leader failure</strong> is injected at time step <strong>1500</strong>.</p>
+<h3 id="what-happens">What happens</h3>
+<ul>
+<li>Initial transient during first leader election</li>
+<li>Second transient when the current leader fails</li>
+<li>Tracking resumes after re-election</li>
+</ul>
+<h3 id="key-message">Key message</h3>
+<p>Fusion-center behavior can be retained, but with self-healing and without a permanently fixed central node.</p>
+</section><section>
+<h2 id="experiment-2-leader-based-fusion">Experiment 2: Leader-Based Fusion</h2>
+<div style="text-align: center;">
+  <img src="./images/trajectories-fc-based.png" style="width: 68%;">
+</div>
+</section><section>
+<h1 id="takeaways">Takeaways</h1>
+<h3 id="01-dpf-is-coordination-heavy">01. DPF is coordination-heavy</h3>
+<p>The particle-filter machinery is standard; the difficult part is deciding how information moves through the network.</p>
+<h3 id="02-aggregate-computing-exposes-the-design-space">02. Aggregate computing exposes the design space</h3>
+<p>Fusion, propagation, exchanged information, and active regions become configurable parameters.</p>
+<h3 id="03-local-cooperation-can-pay-off">03. Local cooperation can pay off</h3>
+<p>Aggregated measurements and leader election improve estimation behavior while avoiding fully centralized assumptions.</p>
 </section>
 
   
@@ -72,28 +439,28 @@
       
 
     </div>
-<script type="text/javascript" src="/Personalized-Template-Hugo-Reveal-Slides/reveal-hugo/object-assign.js"></script>
+<script type="text/javascript" src="/presentation-2026-dcoss-ac-dpf/reveal-hugo/object-assign.js"></script>
 
-<a href="/Personalized-Template-Hugo-Reveal-Slides/reveal-js/dist/print/" id="print-location" style="display: none;"></a>
+<a href="/presentation-2026-dcoss-ac-dpf/reveal-js/dist/print/" id="print-location" style="display: none;"></a>
 
 <script type="application/json" id="reveal-hugo-site-params">{"custom_theme":"custom-theme.scss","custom_theme_compile":true,"custom_theme_options":{"enablesourcemap":true,"targetpath":"css/custom-theme.css"},"height":"1080","highlight_theme":"solarized-dark","history":true,"mermaid":[{}],"slide_number":true,"theme":"league","transition":"slide","transition_speed":"fast","width":"1920"}</script>
 <script type="application/json" id="reveal-hugo-page-params">null</script>
 
-<script src="/Personalized-Template-Hugo-Reveal-Slides/reveal-js/dist/reveal.js"></script>
+<script src="/presentation-2026-dcoss-ac-dpf/reveal-js/dist/reveal.js"></script>
 
 
   
   
-  <script type="text/javascript" src="/Personalized-Template-Hugo-Reveal-Slides/reveal-js/plugin/markdown/markdown.js"></script>
+  <script type="text/javascript" src="/presentation-2026-dcoss-ac-dpf/reveal-js/plugin/markdown/markdown.js"></script>
   
-  <script type="text/javascript" src="/Personalized-Template-Hugo-Reveal-Slides/reveal-js/plugin/highlight/highlight.js"></script>
+  <script type="text/javascript" src="/presentation-2026-dcoss-ac-dpf/reveal-js/plugin/highlight/highlight.js"></script>
   
-  <script type="text/javascript" src="/Personalized-Template-Hugo-Reveal-Slides/reveal-js/plugin/zoom/zoom.js"></script>
+  <script type="text/javascript" src="/presentation-2026-dcoss-ac-dpf/reveal-js/plugin/zoom/zoom.js"></script>
   
-  <script type="text/javascript" src="/Personalized-Template-Hugo-Reveal-Slides/reveal-js/plugin/notes/notes.js"></script>
+  <script type="text/javascript" src="/presentation-2026-dcoss-ac-dpf/reveal-js/plugin/notes/notes.js"></script>
   
   
-  <script type="text/javascript" src="/Personalized-Template-Hugo-Reveal-Slides/reveal-js/plugin/notes/notes.js"></script>
+  <script type="text/javascript" src="/presentation-2026-dcoss-ac-dpf/reveal-js/plugin/notes/notes.js"></script>
 
 
 
