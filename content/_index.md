@@ -406,13 +406,15 @@ Everybody, only relevant regions, leaders, or partitions.
 ### A useful extra degree of freedom
 Instead of exchanging particles, each node can run its own local particle filter while the weighting step exploits an **aggregated measurement function** built from neighboring observations.
 
-$$
+<div>
+\[
 \hat{y}_t =
 H_{\mathcal{N}(k)}
-\left(
-\left\{ h_k(x_t, v_{k,t}) \right\}_{k \in \mathcal{N}}
-\right)
-$$
+\bigl(
+\{ h_j(x_t, v_{j,t}) \}_{j \in \mathcal{N}(k)}
+\bigr)
+\]
+</div>
 
 
 Nearby sensors collectively behave like a **distributed sensor**. This can be cheaper than exchanging particle sets.
