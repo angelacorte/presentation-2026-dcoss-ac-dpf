@@ -103,7 +103,7 @@ p.fragment.fade-out {
 .reveal strong,
 .reveal b {
 	font-weight: bold;
-	color: #b81f0b //#0084ff//#b81f0b
+	color: #0084ff//#b81f0b
 }
 
 .reveal em {
@@ -305,13 +305,13 @@ kbd {
 }
 
 .reveal .slide-background:after {
-	content: "Cortecchia A. et Al - Flexible Distributed Particle Filtering for the Internet of Things via Aggregate Computing";
+	content: "Cortecchia A. et Al - Flexible Distributed Particle Filtering for the Internet of Things via Aggregate Computing || @DCOSS-IOT 2026";
 	position: absolute;
 	bottom: 2.5%;
 	right: 6%;
 	z-index: -1;
 	color: $linkColor;
-	font-size: .4em;
+	font-size: .6em;
   }	
 
 
