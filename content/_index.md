@@ -24,109 +24,138 @@ Alma Mater Studiorum -- University of Bologna - Cesena, Italy
 
 ---
 
-# Motivation
+# Application
+
+{{% multicol %}}
+{{% col class="text-start col-md-4" %}}
 
 Estimating hidden state of dynamic systems from partial, noisy observations
 
-{{% multicol %}}
-{{% col %}}
+Many cyber-physical systems estimates **hidden dynamical states over time**.
 
-### Problem
-
-Many cyber-physical systems rely on estimating **hidden dynamical states over time**.
-
-Examples include target tracking and environmental monitoring.
-
-{{% /col %}}
-
-{{% col %}}
+Such as target tracking and environmental monitoring applications.
 
 ### Constraint
+
 The state is **not directly observable**.
 
 We only receive noisy, partial, and spatially distributed measurements.
 
 {{% /col %}}
+{{% col %}}
+
+![Target tracking example](./images/Gemini_Generated_Image_y0tp7fy0tp7fy0tp.jpg)
+
+{{% /col %}}
 {{% /multicol %}}
+
+---
+
+# Problem Statement
 
 Core problem: **reconstruct latent dynamics from uncertain observations**.
 
+Classical linear estimation techniques are not suitable: the system of interest exhibits **non-linear dynamics** and **non-Gaussian uncertainty**.
+
+Therefore, we need an estimator that does not force the posterior into a simple closed-form shape, but can maintain **multiple uncertain hypotheses over time**.
+
 ---
 
-## Bayesian Inference
+# The Filtering Problem
+
+We want to estimate the hidden state of a dynamic system over time.
 
 {{% multicol %}}
 {{% col %}}
 
-- Goal: estimate unknown parameters $\theta$ from observed data $D$
-- **Prior** $P(\theta)$: belief before observing data
-- **Likelihood** $P(D \mid \theta)$: compatibility between data and parameter
-- **Posterior** $P(\theta \mid D)$: updated belief after observing data
+### State-space view
 
-{{% /col %}}
-{{% col %}}
-
-### Bayes' rule
+At each time step:
 
 $$
-P(\theta \mid D) =
-\frac{P(D \mid \theta) P(\theta)}{P(D)}
+x_t = f(x_{t-1}, u_t)
 $$
 
-Start from a prior belief, observe data, update the estimate.
+$$
+y_t = h(x_t, v_t)
+$$
+
+where:
+
+- $x_t$ is the hidden system state
+- $y_t$ is the observation
+- $u_t$ is process noise
+- $v_t$ is measurement noise
 
 {{% /col %}}
-{{% /multicol %}}
-
----
-
-# From Bayesian Inference to Particle Filters
-
-{{% multicol %}}
 {{% col %}}
 
 ### Filtering objective
-In principle, Bayesian inference gives the full posterior:
 
-$$P(x_t \mid y_1, \dots, y_t)$$
+Given all observations so far:
 
-Where:
-- $y_1, \dots, y_t$ are the **noisy observations** up to time $t$
-- $x_t$ is the **hidden state** at time $t$
+$$
+y_{1:t} = y_1, \dots, y_t
+$$
 
-{{% /col %}}
-{{% col %}}
+estimate the posterior belief:
 
-### Analytical solution
-- Linear dynamics
-- Linear observation model
-- Gaussian noise
-- Posterior remains Gaussian
-- Kalman filter applies
+$$
+p(x_t \mid y_{1:t})
+$$
 
-### Real-world systems
-- Nonlinear dynamics
-- Non-Gaussian noise
-- Complex or multimodal posterior
-- Exact inference becomes intractable
+This belief is updated recursively as new observations arrive.
 
 {{% /col %}}
 {{% /multicol %}}
 
 ---
 
-# Particle Filters
+# Particle Filters (PF)
 
-Monte Carlo state estimation for nonlinear and non-Gaussian systems
+A practical way to track hidden state under nonlinear and non-Gaussian uncertainty
+
+{{% multicol %}}
+{{% col %}}
+
+### Key idea
+Instead of representing belief with a single estimate, a particle filter represents it with many possible hypotheses:
+
+- each **particle** is one possible state of the system
+- each **weight** says how plausible that hypothesis is
+- as new observations arrive, unlikely particles fade out
+- likely particles are reinforced over time
+
+{{% /col %}}
+{{% col %}}
+
+### Why useful here
+- Works with nonlinear dynamics
+- Handles non-Gaussian and multimodal uncertainty
+- Supports sequential estimation over time
+- Naturally fits tracking and monitoring problems
+
+{{% /col %}}
+{{% /multicol %}}
+
+Transition: **we move from “what is the hidden state?” to “how do we maintain a cloud of possible states as observations arrive?”**
 
 ---
 
-## Centralized Particle Filters
+# (Centralized) Particle Filters
+
+Monte Carlo state estimation for nonlinear and non-Gaussian systems
+
+{{% multicol %}}
+{{% col %}}
 
 ### Posterior approximation
 We estimate a hidden state $x_t$ from noisy observations $y_{1:t}$ by representing the posterior with weighted samples:
 
 $p(x_t \mid y_{1:t}) \approx \sum_i w_t^i \delta(x_t - x_t^i)$
+
+{{% /col %}}
+{{% col %}}
 
 ### One filtering iteration
 - **Prediction:** Propagate each particle through the dynamical model.
@@ -134,6 +163,8 @@ $p(x_t \mid y_{1:t}) \approx \sum_i w_t^i \delta(x_t - x_t^i)$
 - **Resampling:** Keep plausible hypotheses and discard weak ones.
 - **Estimate:** Compute the state estimate from the weighted particles.
 
+{{% /col %}}
+{{% /multicol %}}
 
 In distributed settings, this machinery remains the same; the hard part becomes information coordination.
 
@@ -141,16 +172,19 @@ In distributed settings, this machinery remains the same; the hard part becomes 
 
 # Distributed Particle Filters
 
-Filtering becomes a coordination problem
-
----
-
-## Why Distributed Particle Filters?
+{{% multicol %}}
+{{% col %}}
 
 ### Motivation
+
+Filtering becomes a coordination problem
+
 In many networked systems, observations are collected by **multiple spatially distributed agents**.
 
 A centralized particle filter assumes all measurements are available in one place.
+
+{{% /col %}}
+{{% col %}}
 
 ### Why this is unrealistic
 - Limited bandwidth
@@ -159,31 +193,17 @@ A centralized particle filter assumes all measurements are available in one plac
 - Topology changes
 - Node and link failures
 
+{{% /col %}}
+{{% /multicol %}}
 
 Main design question: **how do we distribute filtering without losing too much estimation quality?**
 
 ---
 
-## From Centralized PF to Distributed PF
+# Different DPF Architectures
 
-### Same filtering logic
-- Prediction
-- Weighting
-- Resampling
-- State estimation
-
-### Different architecture
-- Measurements are local
-- Communication is constrained
-- No node may have full global information
-- Information must be routed, fused, or summarized
-
-
-Hence, DPF is mainly a **coordination problem on top of the PF machinery**.
-
----
-
-## A High-Level Taxonomy of DPF Architectures
+{{% multicol %}}
+{{% col %}}
 
 ### Fusion center
 Local agents process measurements, then send local results to a central node for fusion.
@@ -194,35 +214,46 @@ A selected path or subset of nodes accumulates information and performs global e
 ### Consensus-based
 All agents iteratively exchange information to obtain consistent local beliefs.
 
-
 Main trade-off: **estimation quality vs communication burden vs robustness**.
 
+{{% /col %}}
+{{% col %}}
+
+![DPF taxonomy](./images/pfs.png)
+
+{{%/ col %}}
+{{%/ multicol %}}
+
 ---
 
-## State Estimation of Dynamic Systems
+# Fusion Center-Based DPF
 
-<div style="text-align: center;">
-  <img src="./images/pfs.png" style="width: 88%;">
-</div>
-
----
-
-## Fusion Center-Based DPF
+{{% multicol %}}
+{{% col %}}
 
 ### Architecture
 Each agent processes its own measurements locally. Local posteriors or local estimates are reported to a **fusion center**, which combines the received information and computes the global estimate.
+
+{{% /col %}}
+{{% col %}}
 
 ### Why attractive
 - Conceptually simple
 - Easy to organize
 - Global decision available in one place
 
+{{% /col %}}
+{{% col %}}
+
 ### Typical use case
 Applications where global knowledge is needed only at one node.
 
----
+{{%/ col %}}
+{{%/ multicol %}} 
 
-## Fusion Center-Based DPF: Pros and Cons
+
+{{% multicol %}}
+{{% col %}}
 
 ### Advantages
 - Simple architecture
@@ -230,56 +261,70 @@ Applications where global knowledge is needed only at one node.
 - Often good estimation quality
 - Natural with a central decision-maker
 
+{{% /col %}}
+{{% col %}}
+
 ### Drawbacks
 - Single point of failure
 - Poor robustness against fusion-center faults
 - High communication burden near the center
 - Strong dependence on network topology
 
----
-
-## Reducing the Burden: Clustered / Two-Tier Architectures
-
-### Two-tier organization
-- **Sensors:** Collect raw measurements or local summaries.
-- **Cluster heads:** Aggregate nearby sensor information.
-- **Fusion center:** Combines cluster-level information.
-- **Global estimate:** A single decision point remains.
-
-
-This reduces long-distance communication and avoids requiring every sensor to talk directly to the fusion center.
+{{% /col %}}
+{{% /multicol %}}
 
 ---
 
-## Leader-Agent Based DPF
+# Leader-Agent Based DPF
+
+{{% multicol %}}
+{{% col %}}
 
 ### Key idea
 No fixed fusion center is assumed. Instead, only a subset of agents is activated for global estimation, forming a **leader-agent path** along which information is accumulated and propagated.
 
+{{% /col %}}
+{{% col %}}
+
 ### Design intuition
 Global estimation is not done by everyone: it is delegated to selected nodes, dynamically chosen in the network.
 
----
+{{% /col %}}
+{{% /multicol %}}
 
-## Leader-Agent Based DPF: Pros and Cons
+
+{{% multicol %}}
+{{% col %}}
 
 ### Advantages
 - Avoids a permanently fixed central node
 - Can reduce communication compared with fully decentralized schemes
 - May exploit informative nodes more efficiently
 
+{{% /col %}}
+{{% col %}}
+
 ### Drawbacks
 - Performance depends on leader selection
 - Accuracy and energy consumption are coupled to the selection policy
 - Coordination overhead remains
 - Leadership can be fragile
+  
+{{% /col %}} 
+{{% /multicol %}}
 
 ---
 
-## Consensus-Based DPF
+# Consensus-Based DPF
+
+{{% multicol %}}
+{{% col %}}
 
 ### Architecture
 All agents participate in the filtering process. No fusion center and no privileged node are required.
+
+{{% /col %}}
+{{% col %}}
 
 ### High-level intuition
 - **Local beliefs:** Each node starts from local information.
@@ -287,9 +332,11 @@ All agents participate in the filtering process. No fusion center and no privile
 - **Propagation:** Information spreads through the network.
 - **Consistency:** Estimates become more globally informed.
 
----
+{{% /col %}}
+{{% /multicol %}}
 
-## Consensus-Based DPF: Pros and Cons
+{{% multicol %}}
+{{% col %}}
 
 ### Advantages
 - High robustness to node failures
@@ -297,28 +344,34 @@ All agents participate in the filtering process. No fusion center and no privile
 - Better adaptability to topology changes
 - No single point of failure
 
+{{% /col %}}
+{{% col %}}
+
 ### Drawbacks
 - Heavier communication demand
 - Possible delay due to consensus iterations
 - Synchronization and consistency can become nontrivial
 - Agreement may not be the real objective
 
+{{% /col %}}
+{{% /multicol %}}
+
 ---
 
-## What Makes DPF Hard in Practice?
+# What Makes DPF Hard in Practice?
 
-### 01. Particles are costly
-Particle filters require many particles to represent the posterior.
+### 01. Particles and communication are costly
+Particle filters require many particles, and exchanging particles, weights, or likelihoods can dominate the method.
 
 ### 02. Networks are imperfect
-Quality is shaped by communication delays, packet drops, topology changes, and local computation limits.
+Communication delays, topology changes, asynchrony, and failures affect estimation quality.
 
 ### 03. Trade-offs dominate
-DPF is always a compromise among accuracy, overhead, complexity, and robustness.
+DPF is always a compromise among **accuracy**, **overhead**, **complexity**, and **robustness**.
 
 ---
 
-## What Should We Be Careful About?
+# What Should We Be Careful About?
 
 ### Cost and load
 - Communication cost
@@ -339,65 +392,34 @@ Raw measurements, local posteriors, particles, and likelihood summaries have ver
 
 ---
 
-## A Design-Space View of DPF
-
-### DPF is not a single algorithmic recipe
-It is **a family of solutions** defined by a few major design choices: where fusion happens, who performs filtering, what information is exchanged, and how often coordination happens.
-
-### FC. Fusion center
-Simple but fragile.
-
-### LA. Leader-agent
-Lighter but coordination-dependent.
-
-### CB. Consensus-based
-Robust but communication-heavy.
-
----
-
-# A Field-Based Perspective
-
-Flexible Distributed Particle Filtering for the Internet of Things via Aggregate Computing
-
-<small>A. Cortecchia, D. Domini, G. Ciatto, R. Casadei, D. Pianini, M. Viroli</small>
-
-<small>Submitted to International Conference On Distributed Computing in Smart Systems and the Internet Of Things (DCOSS-IoT 2026)</small>
-
----
-
 ## How Can a Field-Based Perspective Help DPF?
 
 ### Main point
-The goal is **not** to introduce yet another DPF algorithm. The idea is to expose DPF as a **configurable coordination problem**.
+The goal is **not** to introduce yet another DPF algorithm.
+
+The idea is to expose DPF as a **configurable coordination problem**.
+
+{{% multicol %}}
+{{% col %}}
 
 ### Filtering logic
 - Prediction
 - Weighting
 - Resampling
 
+{{% /col %}}
+{{% col %}}
+
 ### Coordination choices
 - Where fusion happens
 - What is exchanged
 - How far information propagates
+- Who is active
 
+{{% /col %}}
+{{% /multicol %}}
 
 The field-based view turns architectural assumptions into **design parameters**, rather than hard-coded algorithmic commitments.
-
----
-
-## What Becomes Configurable?
-
-### Where fusion happens
-Fixed fusion center, elected leader, or fully decentralized local filters.
-
-### What is exchanged
-Particles, weights, posterior summaries, likelihood surrogates, or raw measurements.
-
-### How far information propagates
-Only local neighborhoods, selected regions, or the whole network.
-
-### Who is active
-Everybody, only relevant regions, leaders, or partitions.
 
 ---
 
@@ -464,7 +486,7 @@ Each node runs a local PF and aggregates neighboring measurements.
 ### 02. Leader-based fusion center
 One elected leader acts as fusion center, and leader failure is injected during execution.
 
-### 03. Common question
+### Common question
 How much coordination is enough to improve tracking without paying the full cost of particle exchange?
 
 ---
