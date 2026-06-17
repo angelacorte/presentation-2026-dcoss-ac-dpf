@@ -29,11 +29,11 @@ Alma Mater Studiorum -- University of Bologna - Cesena, Italy
 {{% multicol %}}
 {{% col class="text-start col-md-4" %}}
 
-Estimating hidden state of dynamic systems from partial, noisy observations
+Estimating hidden state of dynamic systems from partial, noisy observations.
 
-Many cyber-physical systems estimates **hidden dynamical states over time**.
+Many cyber-physical systems estimate **hidden dynamical states over time**.
 
-Such as target tracking and environmental monitoring applications.
+Examples include target tracking and environmental monitoring applications.
 
 ### Constraint
 
@@ -113,7 +113,7 @@ This belief is updated recursively as new observations arrive.
 
 # Particle Filters (PF)
 
-A practical way to track hidden state under nonlinear and non-Gaussian uncertainty
+A practical way to track hidden state under nonlinear and non-Gaussian uncertainty.
 
 {{% multicol %}}
 {{% col %}}
@@ -144,7 +144,7 @@ Transition: **we move from “what is the hidden state?” to “how do we maint
 
 # (Centralized) Particle Filters
 
-Monte Carlo state estimation for nonlinear and non-Gaussian systems
+Monte Carlo state estimation for nonlinear and non-Gaussian systems.
 
 {{% multicol %}}
 {{% col %}}
@@ -152,7 +152,9 @@ Monte Carlo state estimation for nonlinear and non-Gaussian systems
 ### Posterior approximation
 We estimate a hidden state $x_t$ from noisy observations $y_{1:t}$ by representing the posterior with weighted samples:
 
-$p(x_t \mid y_{1:t}) \approx \sum_i w_t^i \delta(x_t - x_t^i)$
+$$
+p(x_t \mid y_{1:t}) \approx \sum_i w_t^i \delta(x_t - x_t^i)
+$$
 
 {{% /col %}}
 {{% col %}}
@@ -177,7 +179,7 @@ In distributed settings, this machinery remains the same; the hard part becomes 
 
 ### Motivation
 
-Filtering becomes a coordination problem
+Filtering becomes a coordination problem.
 
 In many networked systems, observations are collected by **multiple spatially distributed agents**.
 
@@ -306,8 +308,6 @@ Reusable field-based patterns include **spreading**, **aggregation**, **converge
 
 # Field-Based Distributed Particle Filtering
 
-## How Can a Field-Based Perspective Help DPF?
-
 ### Main point
 The goal is **not** to introduce yet another DPF algorithm.
 
@@ -352,7 +352,6 @@ H_{\mathcal{N}(k)}
 \]
 </div>
 
-
 Nearby sensors collectively behave like a **distributed sensor**. This can be cheaper than exchanging particle sets.
 
 ---
@@ -365,69 +364,56 @@ Nearby sensors collectively behave like a **distributed sensor**. This can be ch
 - **Failure:** If the leader disappears, the role is released.
 - **Self-healing:** A new leader resumes the behavior.
 
-
 We can move along the spectrum between centralized simplicity and decentralized robustness through configuration.
 
 ---
 
 # Experimental Evaluation
 
-Two target-tracking experiments in a distributed sensor network
+Two in-silico target-tracking experiments in a distributed sensor network.
 
----
+{{% multicol %}}
+{{% col %}}
 
-## Experimental Setup
-
-### Scenario
-- Target tracking in a 2D space
-- Static network of **25 sensors**
-- Sensors deployed on a perturbed spatial grid
-- Non-linear target trajectory
-
-### Execution
+### Common setup
+- 2D target tracking scenario
+- Static network of **25 sensors** on a perturbed grid
 - Signal quality degrades with distance
-- Each sensor executes at **1 Hz**
-- Experiments last **3000 simulated seconds**
-- Each configuration uses **100 random seeds**
+- Sensors execute at **1 Hz**
+- **3000 simulated seconds**
+- **100 random seeds** per configuration
 
----
+{{% /col %}}
+{{% col %}}
 
-## Two Experiments
+### Experiment 1
+**Local PF + aggregated measurements**
 
-### 01. Neighborhood measurement aggregation
-Each node runs a local PF and aggregates neighboring measurements.
+Each sensor runs its own particle filter. Neighbouring measurements are aggregated only for the weighting step.
 
-### 02. Leader-based fusion center
-One elected leader acts as fusion center, and leader failure is injected during execution.
+### Experiment 2
+**Elected leader as fusion center**
 
-### Common question
-How much coordination is enough to improve tracking without paying the full cost of particle exchange?
+Measurements are aggregated toward an elected leader; a leader failure is injected at time step **1500**.
+
+{{% /col %}}
+{{% /multicol %}}
+
+Main question: **how much coordination is enough to improve tracking without paying the full cost of particle exchange?**
 
 ---
 
 ## Experiment 1: Local PF + Aggregated Measurements
 
-### Setup
-Each sensor keeps its **own local particle filter**. No particle exchange occurs among neighbors. What changes is the **measurement used for weighting**.
+Each sensor keeps its **own local particle filter**. No particles are exchanged.
 
-{{% multicol %}}
-{{% col %}}
-
-### Main variable
+Only the measurement used for weighting changes:
 
 $$
 |\mathcal{N}| \in \{0, 1, 4, 7\}
 $$
 
-{{% /col %}}
-{{% col %}}
-
-- With very small neighborhoods, filters struggle to converge
-- Increasing neighborhood size improves information quality
-- Better measurements imply better trajectory reconstruction
-
-{{% /col %}}
-{{% /multicol %}}
+Increasing the neighbourhood size improves the quality of the aggregated observation, and therefore the trajectory estimate.
 
 ---
 
@@ -436,7 +422,6 @@ $$
 <div style="text-align: center;">
   <img src="./images/trajectories.png" style="width: 98%;">
 </div>
-
 
 Aggregating raw local observations can substantially improve weighting quality **without exchanging particle sets**.
 
@@ -450,22 +435,9 @@ Aggregating raw local observations can substantially improve weighting quality *
 
 ---
 
-## Experiment 2: Elected Leader as Fusion Center
-
-### Setup
-An elected leader plays the role of fusion center. Measurements are progressively aggregated toward the leader, and a **leader failure** is injected at time step **1500**.
-
-### What happens
-- Initial transient during first leader election
-- Second transient when the current leader fails
-- Tracking resumes after re-election
-
-### Key message
-Fusion-center behavior can be retained, but with self-healing and without a permanently fixed central node.
-
----
-
 ## Experiment 2: Leader-Based Fusion
+
+An elected leader plays the fusion-center role. When the leader fails at time step **1500**, the system briefly destabilizes and then resumes tracking after re-election.
 
 <div style="text-align: center;">
   <img src="./images/trajectories-fc-based.png" style="width: 68%;">
