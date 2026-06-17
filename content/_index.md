@@ -214,6 +214,8 @@ A selected path or subset of nodes accumulates information and performs global e
 ### Consensus-based
 All agents iteratively exchange information to obtain consistent local beliefs.
 
+The paper uses these families as a design space, not as separate solutions to present in detail.
+
 Main trade-off: **estimation quality vs communication burden vs robustness**.
 
 {{% /col %}}
@@ -223,138 +225,6 @@ Main trade-off: **estimation quality vs communication burden vs robustness**.
 
 {{%/ col %}}
 {{%/ multicol %}}
-
----
-
-# Fusion Center-Based DPF
-
-{{% multicol %}}
-{{% col %}}
-
-### Architecture
-Each agent processes its own measurements locally. Local posteriors or local estimates are reported to a **fusion center**, which combines the received information and computes the global estimate.
-
-{{% /col %}}
-{{% col %}}
-
-### Why attractive
-- Conceptually simple
-- Easy to organize
-- Global decision available in one place
-
-{{% /col %}}
-{{% col %}}
-
-### Typical use case
-Applications where global knowledge is needed only at one node.
-
-{{%/ col %}}
-{{%/ multicol %}} 
-
-
-{{% multicol %}}
-{{% col %}}
-
-### Advantages
-- Simple architecture
-- Easy fusion logic
-- Often good estimation quality
-- Natural with a central decision-maker
-
-{{% /col %}}
-{{% col %}}
-
-### Drawbacks
-- Single point of failure
-- Poor robustness against fusion-center faults
-- High communication burden near the center
-- Strong dependence on network topology
-
-{{% /col %}}
-{{% /multicol %}}
-
----
-
-# Leader-Agent Based DPF
-
-{{% multicol %}}
-{{% col %}}
-
-### Key idea
-No fixed fusion center is assumed. Instead, only a subset of agents is activated for global estimation, forming a **leader-agent path** along which information is accumulated and propagated.
-
-{{% /col %}}
-{{% col %}}
-
-### Design intuition
-Global estimation is not done by everyone: it is delegated to selected nodes, dynamically chosen in the network.
-
-{{% /col %}}
-{{% /multicol %}}
-
-
-{{% multicol %}}
-{{% col %}}
-
-### Advantages
-- Avoids a permanently fixed central node
-- Can reduce communication compared with fully decentralized schemes
-- May exploit informative nodes more efficiently
-
-{{% /col %}}
-{{% col %}}
-
-### Drawbacks
-- Performance depends on leader selection
-- Accuracy and energy consumption are coupled to the selection policy
-- Coordination overhead remains
-- Leadership can be fragile
-  
-{{% /col %}} 
-{{% /multicol %}}
-
----
-
-# Consensus-Based DPF
-
-{{% multicol %}}
-{{% col %}}
-
-### Architecture
-All agents participate in the filtering process. No fusion center and no privileged node are required.
-
-{{% /col %}}
-{{% col %}}
-
-### High-level intuition
-- **Local beliefs:** Each node starts from local information.
-- **Exchange:** Neighbors communicate iteratively.
-- **Propagation:** Information spreads through the network.
-- **Consistency:** Estimates become more globally informed.
-
-{{% /col %}}
-{{% /multicol %}}
-
-{{% multicol %}}
-{{% col %}}
-
-### Advantages
-- High robustness to node failures
-- Enhanced scalability
-- Better adaptability to topology changes
-- No single point of failure
-
-{{% /col %}}
-{{% col %}}
-
-### Drawbacks
-- Heavier communication demand
-- Possible delay due to consensus iterations
-- Synchronization and consistency can become nontrivial
-- Agreement may not be the real objective
-
-{{% /col %}}
-{{% /multicol %}}
 
 ---
 
@@ -371,26 +241,70 @@ DPF is always a compromise among **accuracy**, **overhead**, **complexity**, and
 
 ---
 
-# What Should We Be Careful About?
+# Aggregate Computing Background
 
-### Cost and load
-- Communication cost
-- Load imbalance
-- Particle, weight, or likelihood exchange may dominate the whole method
+A programming model for collective behaviour in distributed IoT systems.
 
-### Network behavior
-- Topology sensitivity
-- Delay and asynchrony
-- Node failures
+{{% multicol %}}
+{{% col %}}
 
-### Robustness
-- Special nodes introduce fragility
-- Failure handling must be part of the design
+### Usual perspective
+We often design distributed algorithms by specifying:
 
-### Information granularity
-Raw measurements, local posteriors, particles, and likelihood summaries have very different costs.
+- device roles
+- message flows
+- communication protocols
+- failure handling strategies
+
+{{% /col %}}
+{{% col %}}
+
+### Aggregate perspective
+Aggregate Computing lets us describe **what collective behaviour should emerge** from local interactions.
+
+One macro-program runs on all devices; each device repeatedly senses, communicates with neighbours, computes, and acts.
+
+{{% /col %}}
+{{% /multicol %}}
+
+Key point: coordination becomes a **programmable abstraction**, not an ad-hoc protocol.
 
 ---
+
+# Computational Fields
+
+The central abstraction of Aggregate Computing is the **computational field**.
+
+{{% multicol %}}
+{{% col %}}
+
+### Local view
+Each device computes a local value, using:
+
+- local sensors
+- local state
+- messages from neighbours
+
+{{% /col %}}
+{{% col %}}
+
+### Global view
+The collection of all local values forms a field:
+
+$$
+\text{device/location} \mapsto \text{value}
+$$
+
+Fields can represent measurements, estimates, leaders, regions, or information flows.
+
+{{% /col %}}
+{{% /multicol %}}
+
+Reusable field-based patterns include **spreading**, **aggregation**, **converge-cast**, and **leader election**.
+
+---
+
+# Field-Based Distributed Particle Filtering
 
 ## How Can a Field-Based Perspective Help DPF?
 
@@ -419,11 +333,11 @@ The idea is to expose DPF as a **configurable coordination problem**.
 {{% /col %}}
 {{% /multicol %}}
 
-The field-based view turns architectural assumptions into **design parameters**, rather than hard-coded algorithmic commitments.
+This is the paper's main idea: architectural assumptions become **design parameters**, rather than hard-coded algorithmic commitments.
 
 ---
 
-## Aggregate Measurements
+# Contribution 1: Aggregate Measurements
 
 ### A useful extra degree of freedom
 Instead of exchanging particles, each node can run its own local particle filter while the weighting step exploits an **aggregated measurement function** built from neighboring observations.
@@ -443,7 +357,7 @@ Nearby sensors collectively behave like a **distributed sensor**. This can be ch
 
 ---
 
-## Resilient Fusion-Center Behavior Without a Fixed Center
+# Contribution 2: Resilient Fusion Center
 
 ### Leader-based fusion as a field-level behavior
 - **Election:** A leader is selected dynamically.
