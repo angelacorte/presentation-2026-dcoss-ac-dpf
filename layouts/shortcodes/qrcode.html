@@ -1,27 +1,37 @@
 {{- $style := .Get "style" | default "" -}}
 {{- $width := .Get "width" | default 300 -}}
 {{- $height := .Get "height" | default 300 -}}
-{{- $data := .Get "data" | printf "%s" | safeJS -}}
+{{- $data := .Get "data" | printf "%s" -}}
 {{- $seed := sha256 $data | base64Encode -}}
-{{- $image := .Get "image" | default "https://upload.wikimedia.org/wikipedia/commons/9/91/Octicons-mark-github.svg" -}}
-{{- $dotsColor := .Get "dotsColor" | default "#000000" -}}
+{{- $image := .Get "image" | default "" | printf "%s" -}}
+{{- $dotsColor := .Get "dotsColor" | default "theme" -}}
 {{- $dotsType := .Get "dotsType" | default "rounded" -}}
-{{- $backgroundColor := .Get "backgroundColor" | default "#ffffff" -}}
+{{- $backgroundColor := .Get "backgroundColor" | default "transparent" -}}
 {{- $margin := .Get "margin" | default 10 -}}
-<div id="{{ $seed }}" style="{{ .Get "style" }}"></div>
+<div id='{{ $seed }}' style='{{ $style }}'></div>
 <script type="text/javascript">
+    const themeRoot = document.querySelector(".reveal") || document.documentElement;
+    const themeMainColor = getComputedStyle(themeRoot).getPropertyValue("--r-main-color").trim() || "#095aa6";
+    const dotsColorSetting = {{ $dotsColor | jsonify | safeJS }};
+    const backgroundColorSetting = {{ $backgroundColor | jsonify | safeJS }};
+    const imageSetting = {{ $image | jsonify | safeJS }};
+    const dotsColor = dotsColorSetting === "theme" || dotsColorSetting === "" ? themeMainColor : dotsColorSetting;
+    const backgroundColor = backgroundColorSetting === "transparent" || backgroundColorSetting === "" ? "transparent" : backgroundColorSetting;
+    const githubSvg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="${dotsColor}"><path d="M12 .297C5.373.297 0 5.67 0 12.297c0 5.3 3.438 9.8 8.205 11.385.6.112.82-.261.82-.583 0-.288-.01-1.048-.015-2.056-3.338.73-4.042-1.64-4.042-1.64-.546-1.39-1.333-1.762-1.333-1.762-1.09-.744.082-.729.082-.729 1.205.085 1.84 1.24 1.84 1.24 1.07 1.843 2.807 1.311 3.492 1.003.108-.775.419-1.31.762-1.612-2.665-.304-5.466-1.327-5.466-5.905 0-1.306.468-2.374 1.236-3.21-.124-.303-.536-1.523.117-3.177 0 0 1.008-.322 3.3 1.23.957-.266 1.984-.398 3.004-.403 1.02.005 2.048.137 3.008.403 2.28-1.552 3.286-1.23 3.286-1.23.654 1.654.242 2.874.118 3.177.77.836 1.235 1.904 1.235 3.21 0 4.59-2.804 5.599-5.475 5.897.43.368.821 1.1.821 2.216 0 1.6-.014 2.89-.014 3.283 0 .323.218.7.825.58C20.565 22.093 24 17.594 24 12.297 24 5.67 18.627.297 12 .297Z"/></svg>`;
+    const defaultImage = `data:image/svg+xml;charset=UTF-8,${encodeURIComponent(githubSvg)}`;
+    const resolvedImage = imageSetting === "" ? defaultImage : imageSetting;
     const qrCode = new QRCodeStyling({
         width: {{ $width }},
         height: {{ $height }},
         type: "svg",
-        data: {{ $data | printf "%s" }},
-        image: {{ $image  | printf "%s" }},
+        data: {{ $data | jsonify | safeJS }},
+        image: resolvedImage,
         dotsOptions: {
-            color: "{{ $dotsColor }}",
+            color: dotsColor,
             type: "{{ $dotsType }}"
         },
         backgroundOptions: {
-            color: "{{ $backgroundColor }}",
+            color: backgroundColor,
         },
         imageOptions: {
             crossOrigin: "anonymous",
