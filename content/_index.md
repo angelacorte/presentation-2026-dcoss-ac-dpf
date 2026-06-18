@@ -6,7 +6,7 @@ outputs = ["Reveal"]
 
 # Flexible Distributed Particle Filtering for the Internet of Things via Aggregate Computing
 
-[**<span style="color: #bb2e29;">Angela Cortecchia</span>**](mailto:angela.cortecchia@unibo.it), 
+[**<span style="color: #bb2e29;">Angela Cortecchia</span>**](mailto:angela.cortecchia@unibo.it),
 [Davide Domini](mailto:davide.domini@unibo.it),
 [Giovanni Ciatto](mailto:giovanni.ciatto@unibo.it),
 [Roberto Casadei](mailto:roby.casadei@unibo.it),
@@ -24,158 +24,124 @@ Alma Mater Studiorum -- University of Bologna - Cesena, Italy
 
 ---
 
-# Application
+# Motivation
+
+> In IoT, particle filtering is not only an estimation problem: it is a **coordination problem**.
 
 {{% multicol %}}
-{{% col class="text-start col-md-4" %}}
+{{% col class="text-start col-md-5" %}}
 
-Estimating hidden state of dynamic systems from partial, noisy observations.
+Many cyber-physical systems must estimate a **hidden dynamical state** from distributed, noisy observations.
 
-### IoT perspective
-Many cyber-physical systems estimate **hidden dynamical states over time**.
-
-Examples include target tracking, environmental monitoring, mobility, and smart-city applications.
+Examples:
+- target tracking
+- environmental monitoring
+- mobility and traffic
+- smart-city sensing
 
 ### Constraint
-The state is **not directly observable**.
-
-We only receive noisy, partial, and spatially distributed measurements.
+No single device directly observes the full state.
 
 {{% /col %}}
 {{% col %}}
 
-![Target tracking example](./images/Gemini_Generated_Image_y0tp7fy0tp7fy0tp.jpg)
+<div style="text-align: center;">
+  <img src="./images/Gemini_Generated_Image_y0tp7fy0tp7fy0tp.jpg" style="width: 92%; border-radius: 0.4rem;">
+</div>
+
+**Tracking intuition:** sensors observe fragments of evidence; the system reconstructs the target trajectory.
 
 {{% /col %}}
 {{% /multicol %}}
 
 ---
 
-# Problem Statement
-
-Core problem: **reconstruct latent dynamics from uncertain observations**.
-
-Classical linear estimation techniques are not suitable: the system of interest exhibits **non-linear dynamics** and **non-Gaussian uncertainty**.
-
-Therefore, we need an estimator that does not force the posterior into a simple closed-form shape, but can maintain **multiple uncertain hypotheses over time**.
-
----
-
-# The Filtering Problem
-
-We want to estimate the hidden state of a dynamic system over time.
+# From Observations to a Posterior Estimate
 
 {{% multicol %}}
-{{% col %}}
+{{% col class="text-start col-md-5" %}}
 
-### State-space view
-
-At each time step:
+We want to reconstruct a latent state over time:
 
 $$
-x_t = f(x_{t-1}, u_t)
+\text{hidden state} \quad x_t
 $$
 
+from partial and noisy observations:
+
 $$
-y_t = h(x_t, v_t)
+\text{observations} \quad y_{1:t}
 $$
-
-where:
-
-- $x_t$ is the hidden system state
-- $y_t$ is the observation
-- $u_t$ is process noise
-- $v_t$ is measurement noise
-
-{{% /col %}}
-{{% col %}}
 
 ### Filtering objective
-
-Given all observations so far:
-
-$$
-y_{1:t} = y_1, \dots, y_t
-$$
-
-estimate the posterior belief:
+Estimate the posterior distribution:
 
 $$
 p(x_t \mid y_{1:t})
 $$
 
-This belief is updated recursively as new observations arrive.
+This distribution represents uncertainty over the current state.
+
+{{% /col %}}
+{{% col %}}
+
+<div style="border: 2px solid #ddd; border-radius: 0.6rem; padding: 1rem; margin-top: 0.5rem;">
+  <div style="display: grid; grid-template-columns: 1fr 0.35fr 1fr; align-items: center; gap: 0.8rem; text-align: center;">
+    <div>
+      <div style="font-size: 3rem;">📡</div>
+      <strong>Noisy local sensing</strong><br>
+      partial measurements
+    </div>
+    <div style="font-size: 2.3rem;">→</div>
+    <div>
+      <div style="font-size: 3rem;">🎯</div>
+      <strong>Posterior state estimate</strong><br>
+      uncertainty remains explicit
+    </div>
+  </div>
+</div>
+
+### Why particle filters?
+Classical linear estimators are not enough when dynamics are **non-linear** and uncertainty is **non-Gaussian**.
 
 {{% /col %}}
 {{% /multicol %}}
 
 ---
 
-# Particle Filters (PF)
-
-A practical way to track hidden state under nonlinear and non-Gaussian uncertainty.
+# Particle Filters
 
 {{% multicol %}}
-{{% col %}}
+{{% col class="text-start col-md-5" %}}
 
-### Key idea
-Instead of representing belief with a single estimate, a particle filter represents it with many possible hypotheses:
+A particle filter represents belief with a **cloud of weighted hypotheses**.
 
-- each **particle** is one possible state of the system
-- each **weight** says how plausible that hypothesis is
-- likely particles are reinforced over time
+- each particle is one possible state
+- each weight says how plausible it is
+- likely particles survive
 - unlikely particles fade out
 
-### Interpretation
-The estimate is not only a point: it is a **cloud of weighted hypotheses**.
+One iteration:
+
+$$
+\text{predict} \rightarrow \text{weight} \rightarrow \text{resample} \rightarrow \text{estimate}
+$$
 
 {{% /col %}}
 {{% col %}}
 
 <div style="text-align: center;">
-  <img src="./images/particles-distribution/step_0.png" style="width: 92%;">
+  <img src="./images/particles-distribution/step_0.png" style="width: 82%;">
 </div>
 
-**At the beginning:** particles explore many possible states.
+**The estimate is a distribution, not only a point.**
 
 {{% /col %}}
 {{% /multicol %}}
 
 ---
 
-# (Centralized) Particle Filters
-
-{{% multicol %}}
-{{% col %}}
-
-### Posterior approximation
-We estimate a hidden state $x_t$ from noisy observations $y_{1:t}$ by representing the posterior with weighted samples:
-
-$$
-p(x_t \mid y_{1:t}) \approx \sum_i w_t^i \delta(x_t - x_t^i)
-$$
-
-### One filtering iteration
-1. **Prediction:** propagate particles through the dynamical model
-2. **Weighting:** compare particles with the new observation
-3. **Resampling:** keep plausible hypotheses and discard weak ones
-4. **Estimate:** summarize the weighted particle cloud
-
-{{% /col %}}
-{{% col %}}
-
-<div style="text-align: center;">
-  <img src="./images/sampling.png" style="width: 90%; border-radius: 0.25rem;">
-</div>
-
-{{% /col %}}
-{{% /multicol %}}
-
-The hard part is maintaining this belief as observations arrive over time.
-
----
-
-# Particle Filter Intuition Over Time
+# Particle Filter Over Time
 
 <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.6rem; align-items: start;">
   <div style="text-align: center;">
@@ -196,7 +162,7 @@ The hard part is maintaining this belief as observations arrive over time.
   </div>
 </div>
 
-The particle cloud evolves as a moving approximation of the posterior belief.
+The particle cloud follows the target while keeping the estimation error visible as uncertainty.
 
 ---
 
@@ -205,58 +171,49 @@ The particle cloud evolves as a moving approximation of the posterior belief.
 In IoT systems, observations are naturally collected by many spatially distributed devices.
 
 {{% multicol %}}
-{{% col %}}
+{{% col class="text-start col-md-5" %}}
 
-### From centralized PF
-A classical PF assumes that all observations are available to a single estimator:
+### Centralized PF
+All observations are assumed to be available to one estimator:
 
 $$
 p(x_t \mid y_{1:t})
 $$
 
-This is convenient, but hides the fact that sensing, computation, and communication are distributed.
+Simple, but unrealistic for open IoT deployments.
 
 {{% /col %}}
-{{% col %}}
+{{% col class="text-start col-md-5" %}}
 
-### To distributed PF
-Each device $k$ observes only local information:
+### Distributed PF
+Each device observes only local information:
 
 $$
 y_{t,k} = h_k(x_t, v_{t,k})
 $$
 
-The goal is to approximate a global belief from distributed observations:
-
-$$
-p(x_t \mid y_{1:t,1:K})
-$$
+The goal is to approximate a global belief through local cooperation.
 
 {{% /col %}}
 {{% /multicol %}}
 
-DPF keeps the PF logic, but turns filtering into a **coordination problem among devices**.
+**DPF keeps the filtering logic, but turns estimation into a coordination problem.**
 
 ---
 
-# Different DPF Architectures
+# DPF: many coordination choices
 
 {{% multicol %}}
-{{% col %}}
+{{% col class="text-start col-md-5" %}}
 
-### Why this matters
-DPF is not a single algorithmic recipe.
+DPF algorithms differ mainly in how they move, combine, and exploit information across the network.
 
-The literature explores different ways to decide:
+Design choices include:
 
 - where information is fused
-- which nodes participate
 - what information is exchanged
-- how much communication is tolerated
-
-The paper uses these families as a **design space**, not as separate solutions to present in detail.
-
-Main trade-off: **estimation quality vs communication burden vs robustness**.
+- how far information propagates
+- which nodes participate
 
 {{% /col %}}
 {{% col %}}
@@ -270,128 +227,133 @@ Main trade-off: **estimation quality vs communication burden vs robustness**.
 
 ---
 
-# What Makes DPF Hard in Practice?
-
-### 01. Particles and communication are costly 
-Particle filters require many particles, and exchanging particles, weights, or likelihoods can dominate the method.
-
-### 02. Networks are imperfect
-Communication delays, topology changes, asynchrony, and failures affect estimation quality.
-
-### 03. Trade-offs dominate
-DPF is always a compromise among **accuracy**, **overhead**, **complexity**, and **robustness**.
-
----
-
-# Aggregate Computing
-
-A programming model for collective behaviour in distributed IoT systems.
+# What Makes DPF Hard?
 
 {{% multicol %}}
 {{% col %}}
 
-### Usual perspective
-We often design distributed algorithms by specifying:
+### Communication constrained 📡
+Bandwidth, latency, energy, and robustness make centralized collection unrealistic.
 
-- device roles
-- message flows
-- communication protocols
-- failure handling strategies
+{{% /col %}}
+{{% col %}}
+  
+### Networks change 🌐
+Delays, topology changes, asynchrony, and failures affect estimation.
 
 {{% /col %}}
 {{% col %}}
 
-<div style="text-align: center;">
-  <img src="./images/collective.jpeg" style="width: 92%; border-radius: 0.4rem;">
-</div>
+### Trade-offs ⚖️
 
-### Aggregate perspective
-Describe **what collective behaviour should emerge** from local interactions.
+Accuracy, overhead, complexity, and robustness must be balanced.
 
 {{% /col %}}
 {{% /multicol %}}
 
-One macro-program runs on all devices; each device repeatedly senses, communicates with neighbours, computes, and acts.
+---
 
-Key point: coordination becomes a **programmable abstraction**, not an ad-hoc protocol.
+# Aggregate Computing and Field Calculus
+
+<div style="text-align: center;">
+  <img src="./images/acDevices.svg" style="width: 52%; border-radius: 0.4rem;">
+</div>
+
+{{% multicol %}}
+{{% col class="text-start col-md-5" %}}
+
+A macro-programming approach that defines the **collective behavior** of heterogeneous devices in self-organizing systems.
+
+Based on the Field Calculus<small>[3]</small>, operates by manipulating distributed data structures called fields.
+
+{{% /col %}}
+{{% col %}}
+
+### Computational field
+A mapping from device to local value, representing a **spatially distributed data structure**.
+
+{{% /col %}}
+{{% /multicol %}}
+
+Reusable field patterns provide **spreading**, **aggregation**, **converge-cast**, and **leader election**.
 
 ---
 
-# Computational Fields
-
-The central abstraction of Aggregate Computing is the **computational field**.
+# AC Computational Model
 
 {{% multicol %}}
 {{% col %}}
 
-### Local view
-Each device computes a local value, using:
+### Asynchronous execution
+Each device executes the same aggregate program **independently** of the others.
 
-- local sensors
-- local state
-- messages from neighbours
+Communication is based on **message passing** between neighbouring devices.
 
-### Global view
-The collection of all local values forms a field:
+By design, AC relies on:
+- local interactions
+- self-organization
+- no central coordinator
 
-$$
-\text{device/location} \mapsto \text{value}
-$$
+This makes AC suitable for large-scale, failure-prone IoT systems.
 
 {{% /col %}}
 {{% col %}}
 
-<div style="text-align: center;">
-  <img src="./images/acDevices.svg" style="width: 92%; border-radius: 0.4rem;">
-</div>
+### Round-based model
+Each device periodically executes a local round:
 
-Fields can represent measurements, estimates, leaders, regions, or information flows.
+$\text{sense} \rightarrow \text{compute} \rightarrow \text{act}$
+
+- **sense:** collect sensor readings and messages from neighbors
+- **compute:** evaluate the local program using neighbor information, environment data, and local state
+- **act:** apply the computed output and send the updated local state to neighbors
 
 {{% /col %}}
 {{% /multicol %}}
 
-Reusable patterns include **spreading**, **aggregation**, **converge-cast**, and **leader election**.
+**Why it matters for DPF:** estimation can be computed locally, while global tracking behaviour emerges from local message exchanges.
 
 ---
 
-# Field-Based Distributed Particle Filtering
+# Key Idea: DPF as a Field Computation
 
-### Main point
 The goal is **not** to introduce yet another DPF algorithm.
 
-The idea is to expose DPF as a **configurable coordination problem**.
+DPF becomes a configurable field computation: filtering stays standard, coordination becomes programmable.
 
 {{% multicol %}}
-{{% col %}}
+{{% col class="text-start col-md-5" %}}
 
 ### Filtering logic
-- Prediction
-- Weighting
-- Resampling
+This remains standard:
+
+- prediction
+- weighting
+- resampling
+- estimation
 
 {{% /col %}}
-{{% col %}}
+{{% col class="text-start col-md-5" %}}
 
 ### Coordination choices
-- Where fusion happens
-- What is exchanged
-- How far information propagates
-- Who is active
+These become programmable:
+
+- where fusion happens
+- what is exchanged
+- how far information propagates
+- who is active
 
 {{% /col %}}
 {{% /multicol %}}
 
-This is the paper's main idea: architectural assumptions become **design parameters**, rather than hard-coded algorithmic commitments.
+**Architectural assumptions become design parameters.**
 
 ---
 
-# Contribution 1: Aggregate Measurements
+### Contribution 1: 
+# Aggregate Likelihoods from Local Measurements
 
-{{% multicol %}}
-{{% col %}}
-
-### A useful extra degree of freedom
-Instead of exchanging particles, each node can run its own local particle filter while the weighting step exploits an **aggregated measurement function** built from neighboring observations.
+Each node keeps its own local particle filter. Instead of exchanging particle sets, neighbours share measurements that are combined during the weighting step.
 
 <div>
 \[
@@ -403,23 +365,14 @@ H_{\mathcal{N}(k)}
 \]
 </div>
 
-{{% /col %}}
-{{% col %}}
-
-<div style="text-align: center;">
-  <img src="./images/ai-traffic.jpeg" style="width: 95%; border-radius: 0.4rem;">
-</div>
-
-{{% /col %}}
-{{% /multicol %}}
-
 Nearby sensors collectively behave like a **distributed sensor**. This can be cheaper than exchanging particle sets.
 
 ---
 
-# Contribution 2: Resilient Fusion Center
+### Contribution 2: 
+# Self-Healing Fusion Center
 
-### Leader-based fusion as a field-level behavior
+### Leader-based fusion as a field-level behaviour
 - **Election:** A leader is selected dynamically.
 - **Fusion:** The leader behaves as the current fusion center.
 - **Failure:** If the leader disappears, the role is released.
@@ -431,31 +384,28 @@ We can move along the spectrum between centralized simplicity and decentralized 
 
 # Experimental Evaluation
 
-The same target-tracking intuition is used to evaluate distributed variants.
-
 {{% multicol %}}
-{{% col %}}
+{{% col class="text-start col-md-5" %}}
 
-### Common setup
-- 2D target tracking scenario
-- Static network of **25 sensors** on a perturbed grid
-- Signal quality degrades with distance
-- Sensors execute at **1 Hz**
-- **3000 simulated seconds**
-- **100 random seeds** per configuration
+### Scenario
+- 2D target tracking
+- 25 static sensors on a perturbed grid
+- signal quality degrades with distance
+- sensors execute at 1 Hz
+- 3000 simulated seconds
+- 100 random seeds per configuration
 
 {{% /col %}}
-{{% col %}}
+{{% col class="text-start col-md-5" %}}
 
-### Experiment 1
-**Local PF + aggregated measurements**
+### Evaluated configurations
+1. **Local PF + aggregated measurements**
+   - each sensor has its own PF
+   - only measurements are shared
 
-Each sensor runs its own particle filter; neighbouring measurements are aggregated only for the weighting step.
-
-### Experiment 2
-**Elected leader as fusion center**
-
-Measurements are aggregated toward an elected leader; a leader failure is injected at time step **1500**.
+2. **Elected leader as fusion center**
+   - measurements converge to a leader
+   - leader failure injected at time step 1500
 
 {{% /col %}}
 {{% /multicol %}}
@@ -464,9 +414,11 @@ Main question: **how much coordination is enough to improve tracking without pay
 
 ---
 
-## Experiment 1: Local PF + Aggregated Measurements
+## Experiment 1: What Changes?
 
-Each sensor keeps its **own local particle filter**. No particles are exchanged.
+Each sensor keeps its **own local particle filter**.
+
+No particles are exchanged.
 
 Only the measurement used for weighting changes:
 
@@ -474,7 +426,10 @@ $$
 |\mathcal{N}| \in \{0, 1, 4, 7\}
 $$
 
-Increasing the neighbourhood size improves the quality of the aggregated observation, and therefore the trajectory estimate.
+<div style="border: 2px solid #ddd; border-radius: 0.6rem; padding: 1rem; margin-top: 1rem; text-align: center;">
+  <strong>Small neighbourhood</strong> → weak local evidence → high error<br>
+  <strong>Larger neighbourhood</strong> → aggregated evidence → better tracking
+</div>
 
 ---
 
@@ -484,7 +439,7 @@ Increasing the neighbourhood size improves the quality of the aggregated observa
   <img src="./images/trajectories.png" style="width: 96%;">
 </div>
 
-Larger neighbourhoods make the local filters converge toward the real trajectory.
+Larger neighbourhoods make local filters converge toward the real trajectory: the estimated path becomes visually closer to the ground truth.
 
 ---
 
@@ -500,10 +455,12 @@ Larger neighbourhoods make the local filters converge toward the real trajectory
 {{% /col %}}
 {{% col %}}
 
-### Result
+### Reading the error plot
+RMSE measures the distance between the estimated target position and the real one.
+
 With few neighbours, the error remains high.
 
-Increasing $|\mathcal{N}|$ reduces the RMSE and improves long-term stability.
+Increasing $|\mathcal{N}|$ reduces RMSE and improves long-term stability.
 
 The benefit comes from sharing **measurements**, not particle sets.
 
@@ -512,14 +469,20 @@ The benefit comes from sharing **measurements**, not particle sets.
 
 ---
 
-## Experiment 2: Leader-Based Fusion
+## Experiment 2: Self-Healing Fusion
 
 {{% multicol %}}
-{{% col %}}
+{{% col class="text-start col-md-5" %}}
 
 An elected leader plays the fusion-center role.
 
-When the leader fails at time step **1500**, the system briefly destabilizes and then resumes tracking after re-election.
+At time step **1500**, the leader fails.
+
+The system shows:
+
+1. a transient during initial leader election
+2. a transient after leader failure
+3. resumed tracking after re-election
 
 ### Message
 Fusion-center behaviour can be retained without a permanently fixed center.
@@ -530,6 +493,8 @@ Fusion-center behaviour can be retained without a permanently fixed center.
 <div style="text-align: center;">
   <img src="./images/trajectories-fc-based.png" style="width: 82%;">
 </div>
+
+The red line marks the failure; the following deviation is the temporary tracking error caused by reconfiguration.
 
 {{% /col %}}
 {{% /multicol %}}
@@ -545,4 +510,16 @@ The particle-filter machinery is standard; the difficult part is deciding how in
 Fusion, propagation, exchanged information, and active regions become configurable parameters.
 
 ### 03. Local cooperation can pay off
-Aggregated measurements and leader election improve estimation behavior while avoiding fully centralized assumptions.
+Aggregated measurements improve tracking accuracy while avoiding particle exchange.
+
+### 04. Fusion can be resilient
+Leader election preserves fusion-center behaviour without relying on a permanently fixed center.
+
+--- 
+
+## Reproducible experiments here!
+
+<div style="text-align: center;">
+  {{< qrcode data="https://github.com/domm99/experiments-ac-based-distributed-particle-filtering" width=240 height=240 dotsColor="theme" backgroundColor="transparent" >}}
+<p><i class="fab fa-github mr-3" style="color: #095aa6;"></i> <a href="https://github.com/domm99/experiments-ac-based-distributed-particle-filtering">domm99/experiments-ac-based-distributed-particle-filtering</a></p>
+</div>
