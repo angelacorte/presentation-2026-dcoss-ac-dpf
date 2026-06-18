@@ -272,7 +272,7 @@ Main trade-off: **estimation quality vs communication burden vs robustness**.
 
 # What Makes DPF Hard in Practice?
 
-### 01. Particles and communication are costly
+### 01. Particles and communication are costly 
 Particle filters require many particles, and exchanging particles, weights, or likelihoods can dominate the method.
 
 ### 02. Networks are imperfect
@@ -283,7 +283,7 @@ DPF is always a compromise among **accuracy**, **overhead**, **complexity**, and
 
 ---
 
-# Aggregate Computing Background
+# Aggregate Computing
 
 A programming model for collective behaviour in distributed IoT systems.
 
@@ -393,13 +393,15 @@ This is the paper's main idea: architectural assumptions become **design paramet
 ### A useful extra degree of freedom
 Instead of exchanging particles, each node can run its own local particle filter while the weighting step exploits an **aggregated measurement function** built from neighboring observations.
 
-$$
+<div>
+\[
 \hat{y}_t =
 H_{\mathcal{N}(k)}
 \bigl(
 \{ h_j(x_t, v_{j,t}) \}_{j \in \mathcal{N}(k)}
 \bigr)
-$$
+\]
+</div>
 
 {{% /col %}}
 {{% col %}}
