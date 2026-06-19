@@ -436,9 +436,11 @@ The particle cloud follows the target while keeping the estimation error visible
   </div>
 </div>
 
+<img alt="experiment setup" src="./images/experiment.gif" width="30%"/>
+
 ---
 
-## Experiment 1
+## Experiment 1: AGGREGATE MEASUREMENT FUNCTION
 
 <div class="experiment-brief">
   <div>
@@ -452,7 +454,7 @@ The particle cloud follows the target while keeping the estimation error visible
 </div>
 
 <div class="plot-card">
-  <img src="./images/trajectories.png" style="width: 96%;">
+  <img src="./images/trajectories.png" style="width: 76%;">
 </div>
 
 ---
@@ -516,19 +518,19 @@ The particle cloud follows the target while keeping the estimation error visible
   <div class="takeaway-editorial">
     <h2>Takeaways</h2>
     <div class="takeaway-line">
-      <span>01</span>
+      <span>-</span>
       <p><strong>DPF as field computation.</strong> Filtering stays standard; coordination becomes programmable.</p>
     </div>
     <div class="takeaway-line">
-      <span>02</span>
+      <span>-</span>
       <p><strong>Flexible architectures.</strong> Fusion, dissemination, and active regions become configurable choices.</p>
     </div>
     <div class="takeaway-line">
-      <span>03</span>
+      <span>-</span>
       <p><strong>Measurement aggregation works.</strong> Local sharing improves tracking without exchanging particle sets.</p>
     </div>
     <div class="takeaway-line is-critical">
-      <span>04</span>
+      <span>-</span>
       <p><strong>Fusion can self-heal.</strong> Leader election preserves fusion-center behaviour after failures.</p>
     </div>
   </div>
