@@ -253,29 +253,26 @@ Accuracy, overhead, complexity, and robustness must be balanced.
 
 ---
 
-# Aggregate Computing and Field Calculus
+# Aggregate Computing
+### A macroprogramming approach to coordination
 
 <div style="text-align: center;">
   <img src="./images/acDevices.svg" style="width: 52%; border-radius: 0.4rem;">
 </div>
 
-{{% multicol %}}
-{{% col class="text-start col-md-5" %}}
+Aggregate Computing lets developers describe the behaviour of a **collective system**, rather than programming each device separately.
 
-A macro-programming approach that defines the **collective behavior** of heterogeneous devices in self-organizing systems.
+The program manipulates **computational fields**: distributed values evolving across the network.
 
-Based on the Field Calculus<small>[3]</small>, operates by manipulating distributed data structures called fields.
+### Why it helps coordination
 
-{{% /col %}}
-{{% col %}}
+Field-level patterns make common distributed behaviours reusable:
+- spreading information
+- aggregating local evidence
+- converging data to selected nodes
+- electing leaders dynamically
 
-### Computational field
-A mapping from device to local value, representing a **spatially distributed data structure**.
-
-{{% /col %}}
-{{% /multicol %}}
-
-Reusable field patterns provide **spreading**, **aggregation**, **converge-cast**, and **leader election**.
+**Key intuition:** devices execute local code, but the programmer reasons in terms of global coordination patterns.
 
 ---
 
@@ -284,34 +281,47 @@ Reusable field patterns provide **spreading**, **aggregation**, **converge-cast*
 {{% multicol %}}
 {{% col %}}
 
-### Asynchronous execution
-Each device executes the same aggregate program **independently** of the others.
+### From collective program to local execution
 
-Communication is based on **message passing** between neighbouring devices.
+AC programs are specified at the **collective level**, but executed independently by each device.
 
-By design, AC relies on:
-- local interactions
-- self-organization
-- no central coordinator
+At every local round, a device updates its state from:
 
-This makes AC suitable for large-scale, failure-prone IoT systems.
+- local sensor readings
+- previous local state
+- messages received from neighbours
+
+This makes field-level coordination executable on asynchronous IoT networks.
 
 {{% /col %}}
 {{% col %}}
 
 ### Round-based model
-Each device periodically executes a local round:
 
-$\text{sense} \rightarrow \text{compute} \rightarrow \text{act}$
+<div class="local-round-slide">
+  <div class="local-round-points">
+    <p><strong>Each round consists of three repeated phases:</strong></p>
+    <ol>
+      <li class="fragment" data-fragment-index="1">
+        <strong class="local-round-sense-text">Sense</strong> collect sensor inputs and incoming neighbor messages.
+      </li>
+      <li class="fragment" data-fragment-index="2">
+        <strong class="local-round-compute-text">Compute</strong> run local state evaluation logic to produce <span class="local-round-mark-teal">new state</span> and <span class="local-round-mark-green">outbound messages</span>.
+      </li>
+      <li class="fragment" data-fragment-index="3">
+        <strong class="local-round-interact-text">Interact / Act</strong> share results and affect the local environment.
+      </li>
+    </ol>
+    <p class="fragment local-round-async" data-fragment-index="4">Rounds are <strong>asynchronous</strong>: there is no global lock-step.</p>
+  </div>
 
-- **sense:** collect sensor readings and messages from neighbors
-- **compute:** evaluate the local program using neighbor information, environment data, and local state
-- **act:** apply the computed output and send the updated local state to neighbors
+{{< local-round-loop >}}
+</div>
 
 {{% /col %}}
 {{% /multicol %}}
 
-**Why it matters for DPF:** estimation can be computed locally, while global tracking behaviour emerges from local message exchanges.
+**Why it matters for DPF:** each node can run the filtering step locally, while AC controls how evidence is exchanged and propagated.
 
 ---
 
@@ -353,7 +363,7 @@ These become programmable:
 ### Contribution 1: 
 # Aggregate measurement function
 
-Each node keeps its own local particle filter. Instead of exchanging particle sets, neighbours share measurements that are combined during the weighting step.
+Each node keeps its own local particle filter. Instead of exchanging particle sets, neighbors share measurements that are combined during the weighting step.
 
 <div>
 \[
@@ -372,7 +382,7 @@ Nearby sensors collectively behave like a **distributed sensor**. This can be ch
 ### Contribution 2: 
 # Self-Healing Fusion Center
 
-### Leader-based fusion as a field-level behaviour
+### Leader-based fusion as a field-level behavior
 - **Election:** A leader is selected dynamically.
 - **Fusion:** The leader behaves as the current fusion center.
 - **Failure:** If the leader disappears, the role is released.
@@ -424,8 +434,8 @@ $$
 |\mathcal{N}| \in \{0, 1, 4, 7\}
 $$
 
-<strong>Small neighbourhood</strong> → weak local evidence → high error<br>
-<strong>Larger neighbourhood</strong> → aggregated evidence → better tracking
+<strong>Small neighborhood</strong> → weak local evidence → high error<br>
+<strong>Larger neighborhood</strong> → aggregated evidence → better tracking
 
 <div style="text-align: center;">
   <img src="./images/trajectories.png" style="width: 96%;">
@@ -446,7 +456,7 @@ $$
 {{% col %}}
 
 - RMSE measures the distance between the estimated target position and the real one.
-- With few neighbours, the error remains high.
+- With few neighbors, the error remains high.
 - Increasing $|\mathcal{N}|$ reduces RMSE and improves long-term stability.
 - The benefit comes from sharing **measurements**, not particle sets.
 
@@ -471,7 +481,7 @@ The system shows:
 3. Transient after leader failure
 4. Resumed tracking after re-election
 
-Fusion-center behaviour can be retained without a permanently fixed center.
+Fusion-center behavior can be retained without a permanently fixed center.
 
 {{% /col %}}
 {{% col %}}
