@@ -1,0 +1,353 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   width="664"
+   height="395.82306"
+   viewBox="0 0 664 395.82306"
+   version="1.1"
+   id="pf-full-filtering-diagram"
+   role="img"
+   aria-label="Target tracking particle filter intuition"
+   sodipodi:docname="draw.svg"
+   inkscape:version="1.4 (e7c3feb1, 2024-10-09)"
+   inkscape:export-filename="draw.png"
+   inkscape:export-xdpi="96"
+   inkscape:export-ydpi="96"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview24"
+     pagecolor="#ffffff"
+     bordercolor="#000000"
+     borderopacity="0.25"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     inkscape:zoom="1.6498244"
+     inkscape:cx="278.81756"
+     inkscape:cy="225.78161"
+     inkscape:window-width="3008"
+     inkscape:window-height="1634"
+     inkscape:window-x="1470"
+     inkscape:window-y="35"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="pf-full-filtering-diagram" />
+  <defs
+     id="defs2">
+    <marker
+       id="pf-arrow-blue"
+       viewBox="0 0 10 10"
+       refX="8"
+       refY="5"
+       markerWidth="6"
+       markerHeight="6"
+       orient="auto-start-reverse"
+       preserveAspectRatio="xMidYMid">
+      <path
+         d="M 0,0 10,5 0,10 Z"
+         fill="#2563eb"
+         id="path1" />
+    </marker>
+    <marker
+       id="pf-arrow-red"
+       viewBox="0 0 10 10"
+       refX="8"
+       refY="5"
+       markerWidth="6"
+       markerHeight="6"
+       orient="auto-start-reverse">
+      <path
+         d="M 0,0 10,5 0,10 Z"
+         fill="#dc2626"
+         id="path2" />
+    </marker>
+  </defs>
+  <path
+     d="m 2.5,267.82307 c 93,-77 171,-52 255,-137 91,-92.999996 157.4354,-57.999996 163.23887,-62.999995"
+     fill="none"
+     stroke="#2563eb"
+     stroke-width="5"
+     stroke-linecap="round"
+     stroke-linejoin="round"
+     id="path3"
+     sodipodi:nodetypes="ccc" />
+  <path
+     d="m 248.20592,139.81118 c 65,-59.999996 103.25126,-71.988106 140.22476,-77.238406"
+     fill="none"
+     stroke="#2563eb"
+     stroke-width="5"
+     stroke-linecap="round"
+     stroke-linejoin="round"
+     marker-end="url(#pf-arrow-blue)"
+     id="path4"
+     sodipodi:nodetypes="cc" />
+  <path
+     d="m 455.5,66.823074 c 58,-1 48,-10.39063 105,35.609366"
+     fill="none"
+     stroke="#2563eb"
+     stroke-width="5"
+     stroke-linecap="round"
+     stroke-linejoin="round"
+     stroke-dasharray="10, 9"
+     marker-end="url(#pf-arrow-blue)"
+     id="path5"
+     sodipodi:nodetypes="cc"
+     style="marker-end:url(#pf-arrow-blue)" />
+  <g
+     transform="rotate(-35,376.72658,-244.72722)"
+     id="g6">
+    <rect
+       x="-34"
+       y="-34"
+       width="68"
+       height="68"
+       rx="6"
+       fill="#eff6ff"
+       stroke="#1d4ed8"
+       stroke-width="4"
+       id="rect5" />
+    <text
+       x="0"
+       y="-48"
+       fill="#1e3a8a"
+       font-family="Inter, Arial, sans-serif"
+       font-size="22px"
+       font-weight="700"
+       text-anchor="middle"
+       id="text6">x<tspan
+   style="font-size:65%;baseline-shift:sub"
+   id="tspan26">1</tspan>, v<tspan
+   style="font-size:65%;baseline-shift:sub"
+   id="tspan25">1</tspan></text>
+  </g>
+  <g
+     transform="rotate(24,53.208762,1034.8216)"
+     id="g8">
+    <rect
+       x="-36"
+       y="-36"
+       width="72"
+       height="72"
+       rx="6"
+       fill="#eff6ff"
+       stroke="#1d4ed8"
+       stroke-width="4"
+       id="rect6" />
+    <text
+       x="0"
+       y="-50"
+       fill="#1e3a8a"
+       font-family="Inter, Arial, sans-serif"
+       font-size="22px"
+       font-weight="700"
+       text-anchor="middle"
+       id="text8">x<tspan
+   style="font-size:65%;baseline-shift:sub"
+   id="tspan28">2</tspan>, v<tspan
+   style="font-size:65%;baseline-shift:sub"
+   id="tspan27">2</tspan></text>
+  </g>
+  <g
+     transform="translate(604.5,123.82307)"
+     id="g10">
+    <circle
+       cx="0"
+       cy="0"
+       r="42"
+       fill="#eff6ff"
+       stroke="#1d4ed8"
+       stroke-width="4"
+       id="circle8" />
+    <text
+       x="0"
+       y="14"
+       fill="#1e3a8a"
+       font-family="Inter, Arial, sans-serif"
+       font-size="48px"
+       font-weight="700"
+       text-anchor="middle"
+       id="text9">?</text>
+    <text
+       x="0"
+       y="69"
+       fill="#1e3a8a"
+       font-family="Inter, Arial, sans-serif"
+       font-size="19px"
+       font-weight="700"
+       text-anchor="middle"
+       id="text10">x<tspan
+   style="font-size:65%;baseline-shift:sub"
+   id="tspan29">?</tspan>, v<tspan
+   style="font-size:65%;baseline-shift:sub"
+   id="tspan30">?</tspan></text>
+  </g>
+  <g
+     id="g25"
+     transform="translate(-81.338966,-45.921067)">
+    <g
+       transform="translate(410,374)"
+       id="g13">
+      <rect
+         x="-34"
+         y="-24"
+         width="68"
+         height="48"
+         rx="8"
+         fill="#fff1f2"
+         stroke="#dc2626"
+         stroke-width="4"
+         id="rect10" />
+      <circle
+         cx="-12"
+         cy="0"
+         r="7"
+         fill="#dc2626"
+         id="circle10" />
+      <circle
+         cx="13"
+         cy="0"
+         r="7"
+         fill="#dc2626"
+         id="circle11" />
+      <path
+         d="m -18,-34 c -26,-40 62,-40 36,0"
+         fill="none"
+         stroke="#dc2626"
+         stroke-width="5"
+         stroke-linecap="round"
+         stroke-linejoin="round"
+         id="path11"
+         style="stroke:#d8cdcd;stroke-opacity:1" />
+      <path
+         d="m -54,-34 c -48,-84 156,-84 108,0"
+         fill="none"
+         stroke="#dc2626"
+         stroke-width="5"
+         stroke-linecap="round"
+         stroke-linejoin="round"
+         id="path12"
+         style="stroke:#d8cdcd;stroke-opacity:1" />
+      <path
+         d="m -92,-34 c -70,-134 254,-134 184,0"
+         fill="none"
+         stroke="#dc2626"
+         stroke-width="5"
+         stroke-linecap="round"
+         stroke-linejoin="round"
+         id="path13"
+         style="stroke:#d8cdcd;stroke-opacity:1" />
+      <text
+         x="0"
+         y="64"
+         fill="#991b1b"
+         font-family="Inter, Arial, sans-serif"
+         font-size="18px"
+         font-weight="700"
+         text-anchor="middle"
+         id="text13">proximity sensor</text>
+    </g>
+    <path
+       d="m 378.24886,352.42856 c -32,-31 -57.54718,-81.74823 -67.54718,-102.74823"
+       fill="none"
+       stroke="#dc2626"
+       stroke-width="4"
+       stroke-linecap="round"
+       stroke-linejoin="round"
+       stroke-dasharray="8, 7"
+       marker-end="url(#pf-arrow-red)"
+       id="path14"
+       sodipodi:nodetypes="cc" />
+    <path
+       d="m 433,342 c 34,-75 40.86974,-85.99946 69.07784,-184.07232"
+       fill="none"
+       stroke="#dc2626"
+       stroke-width="4"
+       stroke-linecap="round"
+       stroke-linejoin="round"
+       stroke-dasharray="8, 7"
+       marker-end="url(#pf-arrow-red)"
+       id="path15"
+       sodipodi:nodetypes="cc" />
+    <text
+       x="364.22806"
+       y="319.28516"
+       fill="#991b1b"
+       font-family="Inter, Arial, sans-serif"
+       font-size="18px"
+       font-weight="700"
+       text-anchor="middle"
+       id="text15">y<tspan
+   style="font-size:65%;baseline-shift:sub"
+   id="tspan31">1</tspan></text>
+    <text
+       x="476.42926"
+       y="286.68961"
+       fill="#991b1b"
+       font-family="Inter, Arial, sans-serif"
+       font-size="18px"
+       font-weight="700"
+       text-anchor="middle"
+       id="text16">y<tspan
+   style="font-size:65%;baseline-shift:sub"
+   id="tspan32">2</tspan></text>
+  </g>
+  <text
+     x="608.66064"
+     y="64.696701"
+     fill="#1e3a8a"
+     font-family="Inter, Arial, sans-serif"
+     font-size="19px"
+     font-weight="700"
+     text-anchor="middle"
+     id="text17">predict next</text>
+  <g
+     fill="#fb7185"
+     stroke="#be123c"
+     stroke-width="2"
+     opacity="0.9"
+     id="g24"
+     transform="translate(-109.5,-74.176926)">
+    <circle
+       cx="680"
+       cy="164"
+       r="4"
+       id="circle17" />
+    <circle
+       cx="706"
+       cy="153"
+       r="5"
+       id="circle18" />
+    <circle
+       cx="737"
+       cy="176"
+       r="4"
+       id="circle19" />
+    <circle
+       cx="667"
+       cy="209"
+       r="5"
+       id="circle20" />
+    <circle
+       cx="748"
+       cy="224"
+       r="4"
+       id="circle21" />
+    <circle
+       cx="713"
+       cy="239"
+       r="5"
+       id="circle22" />
+    <circle
+       cx="769"
+       cy="197"
+       r="3.5"
+       id="circle23" />
+    <circle
+       cx="691"
+       cy="192"
+       r="3.5"
+       id="circle24" />
+  </g>
+</svg>
