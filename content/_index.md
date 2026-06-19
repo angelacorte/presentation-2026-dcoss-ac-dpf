@@ -201,6 +201,8 @@ The particle cloud follows the target while keeping the estimation error visible
 
 # What Makes DPF Hard?
 
+{{% spacer %}}
+
 <div class="challenge-strip">
   <div class="challenge-item">
     <div class="challenge-icon">📡</div>
@@ -262,7 +264,7 @@ The particle cloud follows the target while keeping the estimation error visible
 
 <div class="ac-model-layout">
   <div class="takeaway-editorial">
-    <h2>One program, many local executions</h2>
+    <p>One program, many local executions</p>
     <div class="takeaway-line">
       <span>01</span>
       <p><strong>Collective specification.</strong> The programmer writes the behaviour of the whole device network.</p>
@@ -278,7 +280,12 @@ The particle cloud follows the target while keeping the estimation error visible
   </div>
 </div>
 
-
+<div class="pattern-line">
+  <span>local sensing</span>
+  <span>neighbour exchange</span>
+  <span>state update</span>
+  <span>field evolution</span>
+</div>
 
 {{% /col %}}
 {{% col %}}
@@ -303,14 +310,6 @@ The particle cloud follows the target while keeping the estimation error visible
   </div>
 
 {{< local-round-loop >}}
-
-
-<div class="pattern-line">
-  <span>local sensing</span>
-  <span>neighbour exchange</span>
-  <span>state update</span>
-  <span>field evolution</span>
-</div>
 
 {{% /col %}}
 {{% /multicol %}}
