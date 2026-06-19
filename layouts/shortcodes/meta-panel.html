@@ -1,5 +1,5 @@
 {{ $title := .Get "title" }}
-{{ $tone := .Get "tone" | default "blue" }}
+{{ $tone := .Get "tone" | default "azure" }}
 {{ $compact := .Get "compact" }}
 <div class="meta-panel{{ with $tone }} is-{{ . }}{{ end }}{{ if $compact }} is-compact{{ end }}">
   {{ with $title }}<div class="meta-panel-title">{{ . }}</div>{{ end }}

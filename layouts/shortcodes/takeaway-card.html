@@ -1,6 +1,6 @@
 {{ $number := .Get "number" }}
 {{ $title := .Get "title" }}
-{{ $tone := .Get "tone" | default "blue" }}
+{{ $tone := .Get "tone" | default "azure" }}
 <div class="takeaway-card{{ with $tone }} is-{{ . }}{{ end }}">
   {{ with $number }}<div class="takeaway-number">{{ . }}</div>{{ end }}
   {{ with $title }}<div class="takeaway-title">{{ . }}</div>{{ end }}
