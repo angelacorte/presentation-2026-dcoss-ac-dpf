@@ -232,7 +232,7 @@ Design choices include:
 {{% multicol %}}
 {{% col %}}
 
-### Communication constrained 📡
+### Communication constraints 📡
 Bandwidth, latency, energy, and robustness make centralized collection unrealistic.
 
 {{% /col %}}
@@ -351,7 +351,7 @@ These become programmable:
 ---
 
 ### Contribution 1: 
-# Aggregate Likelihoods from Local Measurements
+# Aggregate measurement function
 
 Each node keeps its own local particle filter. Instead of exchanging particle sets, neighbours share measurements that are combined during the weighting step.
 
@@ -410,11 +410,9 @@ We can move along the spectrum between centralized simplicity and decentralized 
 {{% /col %}}
 {{% /multicol %}}
 
-Main question: **how much coordination is enough to improve tracking without paying the full cost of particle exchange?**
-
 ---
 
-## Experiment 1: What Changes?
+## Experiment 1
 
 Each sensor keeps its **own local particle filter**.
 
@@ -426,24 +424,16 @@ $$
 |\mathcal{N}| \in \{0, 1, 4, 7\}
 $$
 
-<div style="border: 2px solid #ddd; border-radius: 0.6rem; padding: 1rem; margin-top: 1rem; text-align: center;">
-  <strong>Small neighbourhood</strong> → weak local evidence → high error<br>
-  <strong>Larger neighbourhood</strong> → aggregated evidence → better tracking
-</div>
-
----
-
-## Experiment 1: Trajectories
+<strong>Small neighbourhood</strong> → weak local evidence → high error<br>
+<strong>Larger neighbourhood</strong> → aggregated evidence → better tracking
 
 <div style="text-align: center;">
   <img src="./images/trajectories.png" style="width: 96%;">
-</div>
-
-Larger neighbourhoods make local filters converge toward the real trajectory: the estimated path becomes visually closer to the ground truth.
+</div> 
 
 ---
 
-## Experiment 1: RMSE
+## Experiment 1 results: RMSE
 
 {{% multicol %}}
 {{% col %}}
@@ -455,14 +445,10 @@ Larger neighbourhoods make local filters converge toward the real trajectory: th
 {{% /col %}}
 {{% col %}}
 
-### Reading the error plot
-RMSE measures the distance between the estimated target position and the real one.
-
-With few neighbours, the error remains high.
-
-Increasing $|\mathcal{N}|$ reduces RMSE and improves long-term stability.
-
-The benefit comes from sharing **measurements**, not particle sets.
+- RMSE measures the distance between the estimated target position and the real one.
+- With few neighbours, the error remains high.
+- Increasing $|\mathcal{N}|$ reduces RMSE and improves long-term stability.
+- The benefit comes from sharing **measurements**, not particle sets.
 
 {{% /col %}}
 {{% /multicol %}}
@@ -480,11 +466,11 @@ At time step **1500**, the leader fails.
 
 The system shows:
 
-1. a transient during initial leader election
-2. a transient after leader failure
-3. resumed tracking after re-election
+1. Transient during initial leader election
+2. Convergence to a valid estimation
+3. Transient after leader failure
+4. Resumed tracking after re-election
 
-### Message
 Fusion-center behaviour can be retained without a permanently fixed center.
 
 {{% /col %}}
@@ -506,7 +492,7 @@ The red line marks the failure; the following deviation is the temporary trackin
 ### 01. DPF is coordination-heavy
 The particle-filter machinery is standard; the difficult part is deciding how information moves through the network.
 
-### 02. Aggregate computing exposes the design space
+### 02. Aggregate computing abstracts the network architecture
 Fusion, propagation, exchanged information, and active regions become configurable parameters.
 
 ### 03. Local cooperation can pay off
