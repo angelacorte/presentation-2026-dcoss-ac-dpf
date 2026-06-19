@@ -42,7 +42,7 @@ $uniboRed: #bb2e29;
 $mutedInk: #52616d;
 $cardShadow: 0 0.45rem 1.35rem rgba(6, 63, 114, 0.13);
 
-$mainFontSize: 2em;
+$mainFontSize: 2.2em;
 // $mainFont: 'Roboto', sans-serif;
 // $headingFont: 'Roboto', sans-serif;
 // $mainFont: 'Source Sans Pro', Helvetica, sans-serif;
@@ -137,7 +137,7 @@ p.fragment.fade-out {
 }
 
 .reveal mjx-container[jax="SVG"][display="true"] {
-	font-size: inherit !important;
+	font-size: 1.08em !important;
 }
 
 .reveal pre code {
@@ -1529,7 +1529,7 @@ html.blur-animation-light .backgrounds {
 
 .reveal .ac-visual img {
   width: 78%;
-  max-height: 13rem;
+  //max-height: 13rem;
 }
 
 .reveal .ac-copy {
@@ -1749,7 +1749,7 @@ html.blur-animation-light .backgrounds {
 
 .reveal .motivation-visual img {
   width: 88%;
-  max-height: 14rem;
+  //max-height: 14rem;
   object-fit: contain;
 }
 
@@ -1814,7 +1814,7 @@ html.blur-animation-light .backgrounds {
 
 .reveal .equation-line strong {
   color: $mainColor;
-  font-size: 0.72em;
+  font-size: 1.32em;
   font-weight: 700;
 }
 
@@ -1879,8 +1879,8 @@ html.blur-animation-light .backgrounds {
 }
 
 .reveal .pf-visual img {
-  width: 76%;
-  max-height: 15rem;
+  width: 70%;
+  //max-height: 15rem;
   object-fit: contain;
 }
 
