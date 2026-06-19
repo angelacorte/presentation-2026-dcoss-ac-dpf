@@ -170,7 +170,7 @@ The particle cloud follows the target while keeping the estimation error visible
     <h3>Distributed PF</h3>
     <p>Each device observes only local information.</p>
     <div class="compact-equation">$$y_{t,k} = h_k(x_t, v_{t,k})$$</div>
-    <p>The goal is to approximate a global belief through local cooperation.</p>
+    <p>The goal is to approximate the same global belief through local cooperation.</p>
   </div>
 </div>
 
@@ -205,21 +205,18 @@ The particle cloud follows the target while keeping the estimation error visible
 
 <div class="challenge-strip">
   <div class="challenge-item">
-    <div class="challenge-icon">📡</div>
     <div>
       <h3>Communication constraints</h3>
       <p>Bandwidth, latency, energy, and robustness make centralized collection unrealistic.</p>
     </div>
   </div>
   <div class="challenge-item">
-    <div class="challenge-icon">🌐</div>
     <div>
       <h3>Networks change</h3>
       <p>Delays, topology changes, asynchrony, and failures affect estimation.</p>
     </div>
   </div>
   <div class="challenge-item is-critical">
-    <div class="challenge-icon">⚖️</div>
     <div>
       <h3>Trade-offs</h3>
       <p>Accuracy, overhead, complexity, and robustness must be balanced.</p>
@@ -306,7 +303,7 @@ The particle cloud follows the target while keeping the estimation error visible
         <strong class="local-round-interact-text">Interact / Act</strong> share results and affect the local environment.
       </li>
     </ol>
-    <p class="fragment local-round-async" data-fragment-index="4">Rounds are <strong>asynchronous</strong>: there is no global lock-step.</p>
+    <p class="fragment local-round-async" data-fragment-index="4">The model does not require global lock-step; in the experiments, sensors run at 1 Hz without synchronization.</p>
   </div>
 
 {{< local-round-loop >}}
@@ -357,7 +354,7 @@ The particle cloud follows the target while keeping the estimation error visible
 <div class="contribution-layout">
   <div class="contribution-copy">
     <p>Each node keeps its own local particle filter.</p>
-    <p>Instead of exchanging particle sets, neighbors share measurements that are combined during the weighting step.</p>
+    <p>Instead of exchanging particle sets, neighbors share raw observations; local likelihoods are combined during the weighting step.</p>
     <p>Nearby sensors collectively behave like a <strong>distributed sensor</strong>.</p>
   </div>
   <div class="equation-spotlight">
@@ -393,7 +390,7 @@ The particle cloud follows the target while keeping the estimation error visible
     </div>
     <div class="takeaway-line is-critical">
       <span>03</span>
-      <p><strong>Failure.</strong> If the leader disappears, the role is released.</p>
+      <p><strong>Failure.</strong> If the leader disappears, the role is reassigned.</p>
     </div>
     <div class="takeaway-line">
       <span>04</span>
@@ -415,7 +412,7 @@ The particle cloud follows the target while keeping the estimation error visible
     <div class="metric-band">
       <span class="metric-pill">2D target tracking</span>
       <span class="metric-pill">25 sensors</span>
-      <span class="metric-pill">1 Hz sensor execution</span>
+      <span class="metric-pill">1 Hz, unsynchronized</span>
       <span class="metric-pill">3000 simulated seconds</span>
       <span class="metric-pill">100 seeds</span>
     </div>
@@ -526,7 +523,7 @@ The particle cloud follows the target while keeping the estimation error visible
     </div>
     <div class="takeaway-line">
       <span>-</span>
-      <p><strong>Measurement aggregation works.</strong> Local sharing improves tracking without exchanging particle sets.</p>
+      <p><strong>Local likelihood aggregation works.</strong> Sharing observations improves tracking without exchanging particle sets.</p>
     </div>
     <div class="takeaway-line is-critical">
       <span>-</span>

@@ -1482,11 +1482,13 @@ html.blur-animation-light .backgrounds {
 .reveal .challenge-icon {
   display: grid;
   place-items: center;
-  width: 2.2rem;
+  width: 2.5rem;
   height: 2.2rem;
   border-radius: 999px;
   background: rgba(57, 167, 238, 0.11);
-  font-size: 1.265rem;
+  font-size: 0.58em;
+  font-weight: 700;
+  letter-spacing: 0;
 }
 
 .reveal .challenge-item h3 {
