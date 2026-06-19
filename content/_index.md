@@ -218,9 +218,7 @@ Design choices include:
 {{% /col %}}
 {{% col %}}
 
-<div style="text-align: center;">
-  <img src="./images/pfs.png" style="width: 95%;">
-</div>
+{{< pf-taxonomy-tree >}}
 
 {{%/ col %}}
 {{%/ multicol %}}
