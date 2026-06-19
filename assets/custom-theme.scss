@@ -1782,7 +1782,10 @@ html.blur-animation-light .backgrounds {
 }
 
 .reveal .pattern-line.is-left {
+  flex-direction: column;
+  align-items: flex-start;
   justify-content: flex-start;
+  gap: 0.34rem;
   width: 100%;
   margin-left: 0;
   margin-right: 0;
