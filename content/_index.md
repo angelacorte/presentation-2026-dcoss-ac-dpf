@@ -6,6 +6,8 @@ outputs = ["Reveal"]
 
 # Flexible Distributed Particle Filtering for the Internet of Things via Aggregate Computing
 
+{{% spacer %}}
+
 [**<span style="color: #bb2e29;">Angela Cortecchia</span>**](mailto:angela.cortecchia@unibo.it),
 [Davide Domini](mailto:davide.domini@unibo.it),
 [Giovanni Ciatto](mailto:giovanni.ciatto@unibo.it),
@@ -14,6 +16,7 @@ outputs = ["Reveal"]
 and
 [Mirko Viroli](mailto:mirko.viroli@unibo.it)
 
+{{% spacer %}}
 
 Department of Computer Science and Engineering (DISI)<br>
 Alma Mater Studiorum -- University of Bologna - Cesena, Italy
@@ -82,6 +85,7 @@ $$
 
 This distribution represents uncertainty over the current state.
 
+
 {{% /col %}}
 {{% col %}}
 
@@ -103,6 +107,10 @@ This distribution represents uncertainty over the current state.
 
 ### Why particle filters?
 Classical linear estimators are not enough when dynamics are **non-linear** and uncertainty is **non-Gaussian**.
+
+<div style="text-align: center;">
+  <img src="images/prediction.svg" style="width: 82%;">
+</div>
 
 {{% /col %}}
 {{% /multicol %}}
@@ -375,6 +383,10 @@ H_{\mathcal{N}(k)}
 
 Nearby sensors collectively behave like a **distributed sensor**. This can be cheaper than exchanging particle sets.
 
+<div style="border: 2px solid #ddd; border-radius: 0.6rem; padding: 0.75rem; margin-top: 0.75rem; text-align: center;">
+  <strong>Intuition:</strong> more neighbours provide richer local observations, so the aggregated measurement becomes more informative; with few neighbours, the estimate remains weaker and less stable.
+</div>
+
 ---
 
 ### Contribution 2: 
@@ -398,10 +410,17 @@ We can move along the spectrum between centralized simplicity and decentralized 
 ### Scenario
 - 2D target tracking
 - 25 static sensors on a perturbed grid
-- signal quality degrades with distance
 - sensors execute at 1 Hz
 - 3000 simulated seconds
 - 100 random seeds per configuration
+
+### Sensor model
+Each sensor observes the target through a radio-like signal:
+
+- closer target → stronger and cleaner signal
+- farther target → weaker and noisier signal
+
+So, not all sensors are equally informative at every time step.
 
 {{% /col %}}
 {{% col class="text-start col-md-5" %}}
