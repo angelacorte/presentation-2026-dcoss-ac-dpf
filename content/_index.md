@@ -8,7 +8,7 @@ outputs = ["Reveal"]
 
 {{% spacer %}}
 
-[**<span style="color: #bb2e29;">Angela Cortecchia</span>**](mailto:angela.cortecchia@unibo.it),
+[**<span class="deck-title-accent">Angela Cortecchia</span>**](mailto:angela.cortecchia@unibo.it),
 [Davide Domini](mailto:davide.domini@unibo.it),
 [Giovanni Ciatto](mailto:giovanni.ciatto@unibo.it),
 [Roberto Casadei](mailto:roby.casadei@unibo.it),
@@ -18,267 +18,238 @@ and
 
 {{% spacer %}}
 
-Department of Computer Science and Engineering (DISI)<br>
-Alma Mater Studiorum -- University of Bologna - Cesena, Italy
+<span class="deck-affiliation">*Department of Computer Science and Engineering (DISI)<br>
+Alma Mater Studiorum -- University of Bologna - Cesena, Italy*</span>
 
-<div style="text-align: center; width: 100%; margin-top: 1rem;">
-  <img src="./images/DIP INFORMATICA-SCIENZA E INGEGNERIA_DISI_EN.svg" style="width: 38%;">
+<div class="hero-logo">
+  <img src="./images/DIP INFORMATICA-SCIENZA E INGEGNERIA_DISI_EN.svg">
 </div>
 
 ---
 
 # Motivation
 
-> In IoT, particle filtering is not only an estimation problem: it is a **coordination problem**.
+{{< meta-note >}}
+In IoT, particle filtering is not only an estimation problem: it is a **coordination problem**.
+{{< /meta-note >}}
 
-{{% multicol %}}
-{{% col class="text-start col-md-5" %}}
-
-Many cyber-physical systems must estimate a **hidden dynamical state** from distributed, noisy observations.
-
-Examples:
-- target tracking
-- environmental monitoring
-- mobility and traffic
-- smart-city sensing
-
-### Constraint
-No single device directly observes the full state.
-
-{{% /col %}}
-{{% col %}}
-
-<div style="text-align: center;">
-  <img src="./images/Gemini_Generated_Image_y0tp7fy0tp7fy0tp.jpg" style="width: 92%; border-radius: 0.4rem;">
+<div class="motivation-layout">
+  <div class="motivation-copy">
+    <p>Many cyber-physical systems must estimate a <strong>hidden dynamical state</strong> from distributed, noisy observations.</p>
+    <div class="pattern-line is-left">
+      <span>target tracking</span>
+      <span>environmental monitoring</span>
+      <span>mobility and traffic</span>
+      <span>smart-city sensing</span>
+    </div>
+    <div class="constraint-line">
+      <span>Constraint</span>
+      <p>No single device directly observes the full state.</p>
+    </div>
+  </div>
+  <div class="motivation-visual">
+    <img src="./images/Gemini_Generated_Image_y0tp7fy0tp7fy0tp.jpg">
+    <p><strong>Tracking intuition:</strong> sensors observe fragments of evidence; the system reconstructs the target trajectory.</p>
+  </div>
 </div>
-
-**Tracking intuition:** sensors observe fragments of evidence; the system reconstructs the target trajectory.
-
-{{% /col %}}
-{{% /multicol %}}
 
 ---
 
 # From Observations to a Posterior Estimate
 
-{{% multicol %}}
-{{% col class="text-start col-md-5" %}}
-
-We want to reconstruct a latent state over time:
-
-$$
-\text{hidden state} \quad x_t
-$$
-
-from partial and noisy observations:
-
-$$
-\text{observations} \quad y_{1:t}
-$$
-
-### Filtering objective
-Estimate the posterior distribution:
-
-$$
-p(x_t \mid y_{1:t})
-$$
-
-This distribution represents uncertainty over the current state.
-
-
-{{% /col %}}
-{{% col %}}
-
-<div style="border: 2px solid #ddd; border-radius: 0.6rem; padding: 1rem; margin-top: 0.5rem;">
-  <div style="display: grid; grid-template-columns: 1fr 0.35fr 1fr; align-items: center; gap: 0.8rem; text-align: center;">
-    <div>
-      <div style="font-size: 3rem;">📡</div>
-      <strong>Noisy local sensing</strong><br>
-      partial measurements
+<div class="posterior-layout" style="align-items: flex-start;">
+  <div class="posterior-copy" style="margin-top: 0; padding-top: 0;">
+    <p>Reconstruct a latent state over time from partial and noisy observations.</p>
+    <div class="equation-line">
+      <span>hidden state</span>
+      <strong>$$x_t$$</strong>
     </div>
-    <div style="font-size: 2.3rem;">→</div>
-    <div>
-      <div style="font-size: 3rem;">🎯</div>
-      <strong>Posterior state estimate</strong><br>
-      uncertainty remains explicit
+    <div class="equation-line">
+      <span>observations</span>
+      <strong>$$y_{1:t}$$</strong>
+    </div>
+    <div class="equation-line is-focus">
+      <span>filtering objective</span>
+      <strong>$$p(x_t \mid y_{1:t})$$</strong>
     </div>
   </div>
+  <div class="posterior-side" style="margin-top: 0; padding-top: 0;">
+    <div class="posterior-flow">
+      <div class="posterior-flow-step">
+      <strong>Noisy local sensing</strong>
+      partial measurements
+      </div>
+      <div class="posterior-flow-arrow">→</div>
+      <div class="posterior-flow-step">
+      <strong>Posterior state estimate</strong>
+      uncertainty remains explicit
+      </div>
+    </div>
+    <p class="side-statement" style="margin-top: 1.6rem; margin-bottom: 1.8rem;">Classical linear estimators are not enough when dynamics are <strong>non-linear</strong> and uncertainty is <strong>non-Gaussian</strong>.</p>
+    <img src="images/prediction.svg" class="posterior-diagram" style="margin-top: 0;">
+  </div>
 </div>
-
-### Why particle filters?
-Classical linear estimators are not enough when dynamics are **non-linear** and uncertainty is **non-Gaussian**.
-
-<div style="text-align: center;">
-  <img src="images/prediction.svg" style="width: 82%;">
-</div>
-
-{{% /col %}}
-{{% /multicol %}}
 
 ---
 
 # Particle Filters
 
-{{% multicol %}}
-{{% col class="text-start col-md-5" %}}
-
-A particle filter represents belief with a **cloud of weighted hypotheses**.
-
-- each particle is one possible state
-- each weight says how plausible it is
-- likely particles survive
-- unlikely particles fade out
-
-One iteration:
-
-$$
-\text{predict} \rightarrow \text{weight} \rightarrow \text{resample} \rightarrow \text{estimate}
-$$
-
-{{% /col %}}
-{{% col %}}
-
-<div style="text-align: center;">
-  <img src="./images/particles-distribution/step_0.png" style="width: 82%;">
+<div class="pf-layout">
+  <div class="pf-copy">
+    <p>A particle filter represents belief with a <strong>cloud of weighted hypotheses</strong>.</p>
+    <div class="takeaway-line">
+      <span>01</span>
+      <p>Each particle is one possible state.</p>
+    </div>
+    <div class="takeaway-line">
+      <span>02</span>
+      <p>Each weight says how plausible it is.</p>
+    </div>
+    <div class="takeaway-line">
+      <span>03</span>
+      <p>Likely particles survive; unlikely particles fade out.</p>
+    </div>
+    <div class="process-line">
+      <span>predict</span>
+      <span>weight</span>
+      <span>resample</span>
+      <span>estimate</span>
+    </div>
+  </div>
+  <div class="pf-visual">
+    <img src="./images/particles-distribution/step_0.png">
+    <p><strong>The estimate is a distribution, not only a point.</strong></p>
+  </div>
 </div>
-
-**The estimate is a distribution, not only a point.**
-
-{{% /col %}}
-{{% /multicol %}}
 
 ---
 
 # Particle Filter Over Time
 
-<div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.6rem; align-items: start;">
-  <div style="text-align: center;">
-    <img src="./images/particles-distribution/step_0.png" style="width: 100%;">
-    <div><strong>t = 0</strong><br>many possible hypotheses</div>
+<div class="image-grid">
+  <div class="image-grid-item">
+    <img src="./images/particles-distribution/step_0.png">
+    <div class="image-grid-title">t = 0</div>
+    <div class="image-grid-caption">many possible hypotheses</div>
   </div>
-  <div style="text-align: center;">
-    <img src="./images/particles-distribution/step_1000.png" style="width: 100%;">
-    <div><strong>t = 1000</strong><br>belief concentrates</div>
+  <div class="image-grid-item">
+    <img src="./images/particles-distribution/step_1000.png">
+    <div class="image-grid-title">t = 1000</div>
+    <div class="image-grid-caption">belief concentrates</div>
   </div>
-  <div style="text-align: center;">
-    <img src="./images/particles-distribution/step_2000.png" style="width: 100%;">
-    <div><strong>t = 2000</strong><br>the cloud follows the target</div>
+  <div class="image-grid-item">
+    <img src="./images/particles-distribution/step_2000.png">
+    <div class="image-grid-title">t = 2000</div>
+    <div class="image-grid-caption">the cloud follows the target</div>
   </div>
-  <div style="text-align: center;">
-    <img src="./images/particles-distribution/step_2900.png" style="width: 100%;">
-    <div><strong>t = 2900</strong><br>uncertainty remains explicit</div>
+  <div class="image-grid-item">
+    <img src="./images/particles-distribution/step_2900.png">
+    <div class="image-grid-title">t = 2900</div>
+    <div class="image-grid-caption">uncertainty remains explicit</div>
   </div>
 </div>
 
+{{< meta-note >}}
 The particle cloud follows the target while keeping the estimation error visible as uncertainty.
+{{< /meta-note >}}
 
 ---
 
 # Distributed Particle Filters
 
-In IoT systems, observations are naturally collected by many spatially distributed devices.
+<p class="lead-line">In IoT systems, observations are naturally collected by many spatially distributed devices.</p>
 
-{{% multicol %}}
-{{% col class="text-start col-md-5" %}}
+<div class="dpf-compare">
+  <div class="compare-item">
+    <h3>Centralized PF</h3>
+    <p>All observations are assumed to be available to one estimator.</p>
+    <div class="compact-equation">$$p(x_t \mid y_{1:t})$$</div>
+    <p>Simple, but unrealistic for open IoT deployments.</p>
+  </div>
+  <div class="compare-item is-focus">
+    <h3>Distributed PF</h3>
+    <p>Each device observes only local information.</p>
+    <div class="compact-equation">$$y_{t,k} = h_k(x_t, v_{t,k})$$</div>
+    <p>The goal is to approximate a global belief through local cooperation.</p>
+  </div>
+</div>
 
-### Centralized PF
-All observations are assumed to be available to one estimator:
-
-$$
-p(x_t \mid y_{1:t})
-$$
-
-Simple, but unrealistic for open IoT deployments.
-
-{{% /col %}}
-{{% col class="text-start col-md-5" %}}
-
-### Distributed PF
-Each device observes only local information:
-
-$$
-y_{t,k} = h_k(x_t, v_{t,k})
-$$
-
-The goal is to approximate a global belief through local cooperation.
-
-{{% /col %}}
-{{% /multicol %}}
-
+{{< meta-note >}}
 **DPF keeps the filtering logic, but turns estimation into a coordination problem.**
+{{< /meta-note >}}
 
 ---
 
 # DPF: many coordination choices
 
-{{% multicol %}}
-{{% col class="text-start col-md-5" %}}
-
-DPF algorithms differ mainly in how they move, combine, and exploit information across the network.
-
-Design choices include:
-
-- where information is fused
-- what information is exchanged
-- how far information propagates
-- which nodes participate
-
-{{% /col %}}
-{{% col %}}
-
-{{< pf-taxonomy-tree >}}
-
-{{%/ col %}}
-{{%/ multicol %}}
+<div class="choices-layout">
+  <div class="choices-copy">
+    <p>DPF algorithms differ mainly in how they move, combine, and exploit information across the network.</p>
+    <div class="pattern-line is-left">
+      <span>where fusion happens</span>
+      <span>what is exchanged</span>
+      <span>how far evidence propagates</span>
+      <span>which nodes participate</span>
+    </div>
+  </div>
+  <div class="choices-tree">
+    {{< pf-taxonomy-tree >}}
+  </div>
+</div>
 
 ---
 
 # What Makes DPF Hard?
 
-{{% multicol %}}
-{{% col %}}
-
-### Communication constraints 📡
-Bandwidth, latency, energy, and robustness make centralized collection unrealistic.
-
-{{% /col %}}
-{{% col %}}
-  
-### Networks change 🌐
-Delays, topology changes, asynchrony, and failures affect estimation.
-
-{{% /col %}}
-{{% col %}}
-
-### Trade-offs ⚖️
-
-Accuracy, overhead, complexity, and robustness must be balanced.
-
-{{% /col %}}
-{{% /multicol %}}
+<div class="challenge-strip">
+  <div class="challenge-item">
+    <div class="challenge-icon">📡</div>
+    <div>
+      <h3>Communication constraints</h3>
+      <p>Bandwidth, latency, energy, and robustness make centralized collection unrealistic.</p>
+    </div>
+  </div>
+  <div class="challenge-item">
+    <div class="challenge-icon">🌐</div>
+    <div>
+      <h3>Networks change</h3>
+      <p>Delays, topology changes, asynchrony, and failures affect estimation.</p>
+    </div>
+  </div>
+  <div class="challenge-item is-critical">
+    <div class="challenge-icon">⚖️</div>
+    <div>
+      <h3>Trade-offs</h3>
+      <p>Accuracy, overhead, complexity, and robustness must be balanced.</p>
+    </div>
+  </div>
+</div>
 
 ---
 
 # Aggregate Computing
 ### A macroprogramming approach to coordination
 
-<div style="text-align: center;">
-  <img src="./images/acDevices.svg" style="width: 52%; border-radius: 0.4rem;">
+<div class="ac-overview">
+  <div class="ac-visual">
+    <img src="./images/acDevices.svg">
+  </div>
+  <div class="ac-copy">
+    <p>Aggregate Computing lets developers describe the behaviour of a <strong>collective system</strong>, rather than programming each device separately.</p>
+    <p>The program manipulates <strong>computational fields</strong>: distributed values evolving across the network.</p>
+  </div>
 </div>
 
-Aggregate Computing lets developers describe the behaviour of a **collective system**, rather than programming each device separately.
+<div class="pattern-line">
+  <span>spreading information</span>
+  <span>aggregating evidence</span>
+  <span>converging data</span>
+  <span>electing leaders</span>
+</div>
 
-The program manipulates **computational fields**: distributed values evolving across the network.
-
-### Why it helps coordination
-
-Field-level patterns make common distributed behaviours reusable:
-- spreading information
-- aggregating local evidence
-- converging data to selected nodes
-- electing leaders dynamically
-
+{{< meta-note >}}
 **Key intuition:** devices execute local code, but the programmer reasons in terms of global coordination patterns.
+{{< /meta-note >}}
 
 ---
 
@@ -289,15 +260,25 @@ Field-level patterns make common distributed behaviours reusable:
 
 ### From collective program to local execution
 
-AC programs are specified at the **collective level**, but executed independently by each device.
+<div class="ac-model-layout">
+  <div class="takeaway-editorial">
+    <h2>One program, many local executions</h2>
+    <div class="takeaway-line">
+      <span>01</span>
+      <p><strong>Collective specification.</strong> The programmer writes the behaviour of the whole device network.</p>
+    </div>
+    <div class="takeaway-line">
+      <span>02</span>
+      <p><strong>Local rounds.</strong> Each device evaluates the same program using local sensors, memory, and neighbour messages.</p>
+    </div>
+    <div class="takeaway-line is-critical">
+      <span>03</span>
+      <p><strong>Emergent field.</strong> The collection of local values forms the global computational field.</p>
+    </div>
+  </div>
+</div>
 
-At every local round, a device updates its state from:
 
-- local sensor readings
-- previous local state
-- messages received from neighbours
-
-This makes field-level coordination executable on asynchronous IoT networks.
 
 {{% /col %}}
 {{% col %}}
@@ -322,141 +303,157 @@ This makes field-level coordination executable on asynchronous IoT networks.
   </div>
 
 {{< local-round-loop >}}
+
+
+<div class="pattern-line">
+  <span>local sensing</span>
+  <span>neighbour exchange</span>
+  <span>state update</span>
+  <span>field evolution</span>
 </div>
 
 {{% /col %}}
 {{% /multicol %}}
 
-**Why it matters for DPF:** each node can run the filtering step locally, while AC controls how evidence is exchanged and propagated.
+
 
 ---
 
 # Key Idea: DPF as a Field Computation
 
-The goal is **not** to introduce yet another DPF algorithm.
+<p class="lead-line">The goal is <strong>not</strong> to introduce yet another DPF algorithm.</p>
 
-DPF becomes a configurable field computation: filtering stays standard, coordination becomes programmable.
+<div class="idea-layout">
+  <div class="idea-side">
+    <h3>Filtering logic</h3>
+    <p>This remains standard.</p>
+    <div class="process-line">
+      <span>prediction</span>
+      <span>weighting</span>
+      <span>resampling</span>
+      <span>estimation</span>
+    </div>
+  </div>
+  <div class="idea-side is-focus">
+    <h3>Coordination choices</h3>
+    <p>These become programmable.</p>
+    <div class="process-line">
+      <span>where fusion happens</span>
+      <span>what to exchange</span>
+      <span>how information propagates</span>
+      <span>who is active</span>
+    </div>
+  </div>
+</div>
 
-{{% multicol %}}
-{{% col class="text-start col-md-5" %}}
-
-### Filtering logic
-This remains standard:
-
-- prediction
-- weighting
-- resampling
-- estimation
-
-{{% /col %}}
-{{% col class="text-start col-md-5" %}}
-
-### Coordination choices
-These become programmable:
-
-- where fusion happens
-- what is exchanged
-- how far information propagates
-- who is active
-
-{{% /col %}}
-{{% /multicol %}}
-
+{{< meta-note >}}
 **Architectural assumptions become design parameters.**
+{{< /meta-note >}}
 
 ---
 
 ### Contribution 1: 
 # Aggregate measurement function
 
-Each node keeps its own local particle filter. Instead of exchanging particle sets, neighbors share measurements that are combined during the weighting step.
-
-<div>
-\[
-\hat{y}_t =
-H_{\mathcal{N}(k)}
-\bigl(
-\{ h_j(x_t, v_{j,t}) \}_{j \in \mathcal{N}(k)}
-\bigr)
-\]
+<div class="contribution-layout">
+  <div class="contribution-copy">
+    <p>Each node keeps its own local particle filter.</p>
+    <p>Instead of exchanging particle sets, neighbors share measurements that are combined during the weighting step.</p>
+    <p>Nearby sensors collectively behave like a <strong>distributed sensor</strong>.</p>
+  </div>
+  <div class="equation-spotlight">
+    \[
+    \hat{y}_t =
+    H_{\mathcal{N}(k)}
+    \bigl(
+    \{ h_j(x_t, v_{j,t}) \}_{j \in \mathcal{N}(k)}
+    \bigr)
+    \]
+  </div>
 </div>
 
-Nearby sensors collectively behave like a **distributed sensor**. This can be cheaper than exchanging particle sets.
-
-<div style="border: 2px solid #ddd; border-radius: 0.6rem; padding: 0.75rem; margin-top: 0.75rem; text-align: center;">
-  <strong>Intuition:</strong> more neighbours provide richer local observations, so the aggregated measurement becomes more informative; with few neighbours, the estimate remains weaker and less stable.
-</div>
+{{< meta-note >}}
+<strong>Intuition:</strong> more neighbours provide richer local observations, so the aggregated measurement becomes more informative; with few neighbours, the estimate remains weaker and less stable.
+{{< /meta-note >}}
 
 ---
 
 ### Contribution 2: 
 # Self-Healing Fusion Center
 
-### Leader-based fusion as a field-level behavior
-- **Election:** A leader is selected dynamically.
-- **Fusion:** The leader behaves as the current fusion center.
-- **Failure:** If the leader disappears, the role is released.
-- **Self-healing:** A new leader resumes the behavior.
-
-We can move along the spectrum between centralized simplicity and decentralized robustness through configuration.
+<div class="healing-layout">
+  <div class="takeaway-editorial">
+    <h2>Leader-based fusion as a field-level behavior</h2>
+    <div class="takeaway-line">
+      <span>01</span>
+      <p><strong>Election.</strong> A leader is selected dynamically.</p>
+    </div>
+    <div class="takeaway-line">
+      <span>02</span>
+      <p><strong>Fusion.</strong> The leader behaves as the current fusion center.</p>
+    </div>
+    <div class="takeaway-line is-critical">
+      <span>03</span>
+      <p><strong>Failure.</strong> If the leader disappears, the role is released.</p>
+    </div>
+    <div class="takeaway-line">
+      <span>04</span>
+      <p><strong>Self-healing.</strong> A new leader resumes the behavior.</p>
+    </div>
+  </div>
+  <div class="healing-statement">
+    <p>Configuration lets us move along the spectrum between centralized simplicity and decentralized robustness.</p>
+  </div>
+</div>
 
 ---
 
 # Experimental Evaluation
 
-{{% multicol %}}
-{{% col class="text-start col-md-5" %}}
-
-### Scenario
-- 2D target tracking
-- 25 static sensors on a perturbed grid
-- sensors execute at 1 Hz
-- 3000 simulated seconds
-- 100 random seeds per configuration
-
-### Sensor model
-Each sensor observes the target through a radio-like signal:
-
-- closer target → stronger and cleaner signal
-- farther target → weaker and noisier signal
-
-So, not all sensors are equally informative at every time step.
-
-{{% /col %}}
-{{% col class="text-start col-md-5" %}}
-
-### Evaluated configurations
-1. **Local PF + aggregated measurements**
-   - each sensor has its own PF
-   - only measurements are shared
-
-2. **Elected leader as fusion center**
-   - measurements converge to a leader
-   - leader failure injected at time step 1500
-
-{{% /col %}}
-{{% /multicol %}}
+<div class="eval-layout">
+  <div class="eval-main">
+    <h3>Scenario</h3>
+    <div class="metric-band">
+      <span class="metric-pill">2D target tracking</span>
+      <span class="metric-pill">25 sensors</span>
+      <span class="metric-pill">1 Hz sensor execution</span>
+      <span class="metric-pill">3000 simulated seconds</span>
+      <span class="metric-pill">100 seeds</span>
+    </div>
+    <p>Each sensor observes the target through a radio-like signal: closer targets produce stronger, cleaner evidence; farther targets produce weaker and noisier evidence.</p>
+    <p>Not all sensors are equally informative at every time step.</p>
+  </div>
+  <div class="eval-configs">
+    <h3>Evaluated configurations</h3>
+    <div class="config-row">
+      <span class="config-index">1</span>
+      <div><strong>Local PF + aggregated measurements</strong><br>each sensor has its own PF; only measurements are shared.</div>
+    </div>
+    <div class="config-row is-critical">
+      <span class="config-index">2</span>
+      <div><strong>Elected leader as fusion center</strong><br>measurements converge to a leader; failure is injected at time step 1500.</div>
+    </div>
+  </div>
+</div>
 
 ---
 
 ## Experiment 1
 
-Each sensor keeps its **own local particle filter**.
+<div class="experiment-brief">
+  <div>
+    <p>Each sensor keeps its <strong>own local particle filter</strong>. No particles are exchanged.</p>
+  </div>
+  <div class="experiment-equation">$$|\mathcal{N}| \in \{0, 1, 4, 7\}$$</div>
+  <div>
+    <p><strong>Small neighborhood</strong> → weak evidence → high error</p>
+    <p><strong>Larger neighborhood</strong> → aggregated evidence → better tracking</p>
+  </div>
+</div>
 
-No particles are exchanged.
-
-Only the measurement used for weighting changes:
-
-$$
-|\mathcal{N}| \in \{0, 1, 4, 7\}
-$$
-
-<strong>Small neighborhood</strong> → weak local evidence → high error<br>
-<strong>Larger neighborhood</strong> → aggregated evidence → better tracking
-
-<div style="text-align: center;">
+<div class="plot-card">
   <img src="./images/trajectories.png" style="width: 96%;">
-</div> 
+</div>
 
 ---
 
@@ -465,7 +462,7 @@ $$
 {{% multicol %}}
 {{% col %}}
 
-<div style="text-align: center;">
+<div class="plot-card">
   <img src="./images/rmse.png" style="width: 100%;">
 </div>
 
@@ -484,79 +481,69 @@ $$
 
 ## Experiment 2: Self-Healing Fusion
 
-{{% multicol %}}
-{{% col class="text-start col-md-5" %}}
-
-An elected leader plays the fusion-center role.
-
-At time step **1500**, the leader fails.
-
-The system shows:
-
-1. Transient during initial leader election
-2. Convergence to a valid estimation
-3. Transient after leader failure
-4. Resumed tracking after re-election
-
-Fusion-center behavior can be retained without a permanently fixed center.
-
-{{% /col %}}
-{{% col %}}
-
-<div style="text-align: center;">
-  <img src="./images/trajectories-fc-based.png" style="width: 82%;">
+<div class="exp2-layout">
+  <div class="exp2-copy">
+    <p>An elected leader plays the fusion-center role. At time step <strong>1500</strong>, the leader fails.</p>
+    <div class="takeaway-line">
+      <span>01</span>
+      <p>Transient during initial leader election</p>
+    </div>
+    <div class="takeaway-line">
+      <span>02</span>
+      <p>Convergence to a valid estimation</p>
+    </div>
+    <div class="takeaway-line is-critical">
+      <span>03</span>
+      <p>Transient after leader failure</p>
+    </div>
+    <div class="takeaway-line">
+      <span>04</span>
+      <p>Resumed tracking after re-election</p>
+    </div>
+    <p>Fusion-center behavior can be retained without a permanently fixed center.</p>
+  </div>
+  <div class="plot-card">
+    <img src="./images/trajectories-fc-based.png" style="width: 82%;">
+    <div class="plot-caption">The <span class="accent-red">red line</span> marks the failure; the following deviation is the temporary tracking error caused by reconfiguration.</div>
+  </div>
 </div>
-
-The red line marks the failure; the following deviation is the temporary tracking error caused by reconfiguration.
-
-{{% /col %}}
-{{% /multicol %}}
 
 --- 
 
 # Takeaways and Future Work
 
-{{% multicol %}}
-{{% col class="text-start col-md-6" %}}
-
-## Takeaways
-
-<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem;">
-  <div style="border: 2px solid #ddd; border-radius: 0.6rem; padding: 0.75rem;">
-    <strong>01 · DPF as field computation</strong><br>
-    Filtering stays standard; coordination becomes programmable.
+<div class="closing-layout">
+  <div class="takeaway-editorial">
+    <h2>Takeaways</h2>
+    <div class="takeaway-line">
+      <span>01</span>
+      <p><strong>DPF as field computation.</strong> Filtering stays standard; coordination becomes programmable.</p>
+    </div>
+    <div class="takeaway-line">
+      <span>02</span>
+      <p><strong>Flexible architectures.</strong> Fusion, dissemination, and active regions become configurable choices.</p>
+    </div>
+    <div class="takeaway-line">
+      <span>03</span>
+      <p><strong>Measurement aggregation works.</strong> Local sharing improves tracking without exchanging particle sets.</p>
+    </div>
+    <div class="takeaway-line is-critical">
+      <span>04</span>
+      <p><strong>Fusion can self-heal.</strong> Leader election preserves fusion-center behaviour after failures.</p>
+    </div>
   </div>
-  <div style="border: 2px solid #ddd; border-radius: 0.6rem; padding: 0.75rem;">
-    <strong>02 · Flexible architectures</strong><br>
-    Fusion, dissemination, and active regions become configurable choices.
-  </div>
-  <div style="border: 2px solid #ddd; border-radius: 0.6rem; padding: 0.75rem;">
-    <strong>03 · Measurement aggregation works</strong><br>
-    Local sharing improves tracking without exchanging particle sets.
-  </div>
-  <div style="border: 2px solid #ddd; border-radius: 0.6rem; padding: 0.75rem;">
-    <strong>04 · Fusion can self-heal</strong><br>
-    Leader election preserves fusion-center behaviour after failures.
+  <div class="future-panel">
+    <h2>Future work</h2>
+    <div class="future-group">
+      <h3>Explore more AC design dimensions</h3>
+      <p>Broader coordination strategies for propagation and fusion; activation only in relevant regions.</p>
+    </div>
+    <div class="future-group">
+      <h3>Extend the scenarios</h3>
+      <p>Multiple moving targets, flocking-inspired coordination, heterogeneous sensing, and richer deployment conditions.</p>
+    </div>
   </div>
 </div>
-
-{{% /col %}}
-{{% col class="text-start col-md-5" %}}
-
-## Future work
-
-### Explore more AC design dimensions:
-- broader spectrum of coordination strategies for propagation and fusion
-- activation only in relevant regions
-
-### Extend the scenarios:
-- multiple moving targets
-- flocking-inspired coordination for moving targets
-- heterogeneous sensing modalities
-- richer deployment conditions
-
-{{% /col %}}
-{{% /multicol %}}
 
 --- 
 
@@ -566,7 +553,7 @@ The red line marks the failure; the following deviation is the temporary trackin
 
 ### Reproducible experiments here:
 
-<div style="text-align: center;">
+<div class="insight-card" style="max-width: 58%; margin: 0 auto;">
   {{< qrcode data="https://github.com/domm99/experiments-ac-based-distributed-particle-filtering" width=240 height=240 dotsColor="theme" backgroundColor="transparent" >}}
-<p><i class="fab fa-github mr-3" style="color: #095aa6;"></i> <a href="https://github.com/domm99/experiments-ac-based-distributed-particle-filtering">domm99/experiments-ac-based-distributed-particle-filtering</a></p>
+  <p><i class="fab fa-github mr-3" style="color: #095aa6;"></i> <a href="https://github.com/domm99/experiments-ac-based-distributed-particle-filtering">domm99/experiments-ac-based-distributed-particle-filtering</a></p>
 </div>
