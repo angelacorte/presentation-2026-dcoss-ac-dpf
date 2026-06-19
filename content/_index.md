@@ -497,23 +497,57 @@ The red line marks the failure; the following deviation is the temporary trackin
 
 --- 
 
-# Takeaways
+# Takeaways and Future Work
 
-### 01. DPF is coordination-heavy
-The particle-filter machinery is standard; the difficult part is deciding how information moves through the network.
+{{% multicol %}}
+{{% col class="text-start col-md-6" %}}
 
-### 02. Aggregate computing abstracts the network architecture
-Fusion, propagation, exchanged information, and active regions become configurable parameters.
+## Takeaways
 
-### 03. Local cooperation can pay off
-Aggregated measurements improve tracking accuracy while avoiding particle exchange.
+<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem;">
+  <div style="border: 2px solid #ddd; border-radius: 0.6rem; padding: 0.75rem;">
+    <strong>01 · DPF as field computation</strong><br>
+    Filtering stays standard; coordination becomes programmable.
+  </div>
+  <div style="border: 2px solid #ddd; border-radius: 0.6rem; padding: 0.75rem;">
+    <strong>02 · Flexible architectures</strong><br>
+    Fusion, dissemination, and active regions become configurable choices.
+  </div>
+  <div style="border: 2px solid #ddd; border-radius: 0.6rem; padding: 0.75rem;">
+    <strong>03 · Measurement aggregation works</strong><br>
+    Local sharing improves tracking without exchanging particle sets.
+  </div>
+  <div style="border: 2px solid #ddd; border-radius: 0.6rem; padding: 0.75rem;">
+    <strong>04 · Fusion can self-heal</strong><br>
+    Leader election preserves fusion-center behaviour after failures.
+  </div>
+</div>
 
-### 04. Fusion can be resilient
-Leader election preserves fusion-center behaviour without relying on a permanently fixed center.
+{{% /col %}}
+{{% col class="text-start col-md-5" %}}
+
+## Future work
+
+### Explore more AC design dimensions:
+- broader spectrum of coordination strategies for propagation and fusion
+- activation only in relevant regions
+
+### Extend the scenarios:
+- multiple moving targets
+- flocking-inspired coordination for moving targets
+- heterogeneous sensing modalities
+- richer deployment conditions
+
+{{% /col %}}
+{{% /multicol %}}
 
 --- 
 
-## Reproducible experiments here!
+# Thank you for your attention!
+
+{{% spacer %}}
+
+### Reproducible experiments here:
 
 <div style="text-align: center;">
   {{< qrcode data="https://github.com/domm99/experiments-ac-based-distributed-particle-filtering" width=240 height=240 dotsColor="theme" backgroundColor="transparent" >}}
