@@ -8,7 +8,7 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"><link rel="stylesheet" href="/presentation-2026-dcoss-ac-dpf/reveal-js/dist/reset.css">
 <link rel="stylesheet" href="/presentation-2026-dcoss-ac-dpf/reveal-js/dist/reveal.css">
-  <link rel="stylesheet" href="/presentation-2026-dcoss-ac-dpf/css/custom-theme.min.eed498c4d68946b3eb64a0a6e1a6676a9c249a38abc623ae541e4cda80608179.css" id="theme"><link rel="stylesheet" href="/presentation-2026-dcoss-ac-dpf/highlight-js/solarized-dark.min.css">
+  <link rel="stylesheet" href="/presentation-2026-dcoss-ac-dpf/css/custom-theme.min.08f0cf21f7e41e42f954857ed6f4ea2ebf00c919f7a0d31066155bbdc2fa93da.css" id="theme"><link rel="stylesheet" href="/presentation-2026-dcoss-ac-dpf/highlight-js/solarized-dark.min.css">
 <link href="https://fonts.googleapis.com/css?family=Roboto Mono" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css?family=Oxygen Mono" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css?family=Ubuntu Mono" rel="stylesheet">
@@ -174,7 +174,7 @@ Alma Mater Studiorum – University of Bologna - Cesena, Italy</em></span></p>
     <h3>Distributed PF</h3>
     <p>Each device observes only local information.</p>
     <div class="compact-equation">$$y_{t,k} = h_k(x_t, v_{t,k})$$</div>
-    <p>The goal is to approximate a global belief through local cooperation.</p>
+    <p>The goal is to approximate the same global belief through local cooperation.</p>
   </div>
 </div>
 <div class="meta-note">
@@ -250,21 +250,18 @@ Alma Mater Studiorum – University of Bologna - Cesena, Italy</em></span></p>
 <div style="margin-top: 4rem;"></div>
 <div class="challenge-strip">
   <div class="challenge-item">
-    <div class="challenge-icon">📡</div>
     <div>
       <h3>Communication constraints</h3>
       <p>Bandwidth, latency, energy, and robustness make centralized collection unrealistic.</p>
     </div>
   </div>
   <div class="challenge-item">
-    <div class="challenge-icon">🌐</div>
     <div>
       <h3>Networks change</h3>
       <p>Delays, topology changes, asynchrony, and failures affect estimation.</p>
     </div>
   </div>
   <div class="challenge-item is-critical">
-    <div class="challenge-icon">⚖️</div>
     <div>
       <h3>Trade-offs</h3>
       <p>Accuracy, overhead, complexity, and robustness must be balanced.</p>
@@ -337,7 +334,7 @@ Alma Mater Studiorum – University of Bologna - Cesena, Italy</em></span></p>
         <strong class="local-round-interact-text">Interact / Act</strong> share results and affect the local environment.
       </li>
     </ol>
-    <p class="fragment local-round-async" data-fragment-index="4">Rounds are <strong>asynchronous</strong>: there is no global lock-step.</p>
+    <p class="fragment local-round-async" data-fragment-index="4">The model does not require global lock-step; in the experiments, sensors run at 1 Hz without synchronization.</p>
   </div>
 <div class="local-round-visual" style="background: transparent; background-color: transparent; box-shadow: none; border: none;">
 <div class="local-round-loop" aria-label="Local aggregate-computing round" style="background: transparent; background-color: transparent; box-shadow: none; border: none;">
@@ -427,7 +424,7 @@ Alma Mater Studiorum – University of Bologna - Cesena, Italy</em></span></p>
 <div class="contribution-layout">
   <div class="contribution-copy">
     <p>Each node keeps its own local particle filter.</p>
-    <p>Instead of exchanging particle sets, neighbors share measurements that are combined during the weighting step.</p>
+    <p>Instead of exchanging particle sets, neighbors share raw observations; local likelihoods are combined during the weighting step.</p>
     <p>Nearby sensors collectively behave like a <strong>distributed sensor</strong>.</p>
   </div>
   <div class="equation-spotlight">
@@ -460,7 +457,7 @@ Alma Mater Studiorum – University of Bologna - Cesena, Italy</em></span></p>
     </div>
     <div class="takeaway-line is-critical">
       <span>03</span>
-      <p><strong>Failure.</strong> If the leader disappears, the role is released.</p>
+      <p><strong>Failure.</strong> If the leader disappears, the role is reassigned.</p>
     </div>
     <div class="takeaway-line">
       <span>04</span>
@@ -479,7 +476,7 @@ Alma Mater Studiorum – University of Bologna - Cesena, Italy</em></span></p>
     <div class="metric-band">
       <span class="metric-pill">2D target tracking</span>
       <span class="metric-pill">25 sensors</span>
-      <span class="metric-pill">1 Hz sensor execution</span>
+      <span class="metric-pill">1 Hz, unsynchronized</span>
       <span class="metric-pill">3000 simulated seconds</span>
       <span class="metric-pill">100 seeds</span>
     </div>
@@ -574,7 +571,7 @@ Alma Mater Studiorum – University of Bologna - Cesena, Italy</em></span></p>
     </div>
     <div class="takeaway-line">
       <span>-</span>
-      <p><strong>Measurement aggregation works.</strong> Local sharing improves tracking without exchanging particle sets.</p>
+      <p><strong>Local likelihood aggregation works.</strong> Sharing observations improves tracking without exchanging particle sets.</p>
     </div>
     <div class="takeaway-line is-critical">
       <span>-</span>
