@@ -29,10 +29,6 @@ Alma Mater Studiorum -- University of Bologna - Cesena, Italy*</span>
 
 # Motivation
 
-{{< meta-note >}}
-In IoT, particle filtering is not only an estimation problem: it is a **coordination problem**.
-{{< /meta-note >}}
-
 <div class="motivation-layout">
   <div class="motivation-copy">
     <p>Many cyber-physical systems must estimate a <strong>hidden dynamical state</strong> from distributed, noisy observations.</p>
@@ -121,6 +117,10 @@ In IoT, particle filtering is not only an estimation problem: it is a **coordina
     <p><strong>The estimate is a distribution, not only a point.</strong></p>
   </div>
 </div>
+
+{{< meta-note >}}
+In IoT, particle filtering is not only an estimation problem: it is a **coordination problem**.
+{{< /meta-note >}}
 
 ---
 
@@ -234,7 +234,7 @@ The particle cloud follows the target while keeping the estimation error visible
     <img src="./images/acDevices.svg">
   </div>
   <div class="ac-copy">
-    <p>Aggregate Computing lets developers describe the behaviour of a <strong>collective system</strong>, rather than programming each device separately.</p>
+    <p>Aggregate Computing lets developers describe the <strong>collective behavior</strong> of a system, rather than programming each device separately.</p>
     <p>The program manipulates <strong>computational fields</strong>: distributed values evolving across the network.</p>
   </div>
 </div>
@@ -264,11 +264,11 @@ The particle cloud follows the target while keeping the estimation error visible
     <p>One program, many local executions</p>
     <div class="takeaway-line">
       <span>01</span>
-      <p><strong>Collective specification.</strong> The programmer writes the behaviour of the whole device network.</p>
+      <p><strong>Collective specification.</strong> The programmer writes the behavior of the whole device network.</p>
     </div>
     <div class="takeaway-line">
       <span>02</span>
-      <p><strong>Local rounds.</strong> Each device evaluates the same program using local sensors, memory, and neighbour messages.</p>
+      <p><strong>Local rounds.</strong> Each device evaluates the same program using local sensors, memory, and neighbor messages.</p>
     </div>
     <div class="takeaway-line is-critical">
       <span>03</span>
@@ -279,7 +279,7 @@ The particle cloud follows the target while keeping the estimation error visible
 
 <div class="pattern-line">
   <span>local sensing</span>
-  <span>neighbour exchange</span>
+  <span>neighbor exchange</span>
   <span>state update</span>
   <span>field evolution</span>
 </div>
@@ -303,7 +303,7 @@ The particle cloud follows the target while keeping the estimation error visible
         <strong class="local-round-interact-text">Interact / Act</strong> share results and affect the local environment.
       </li>
     </ol>
-    <p class="fragment local-round-async" data-fragment-index="4">The model does not require global lock-step; in the experiments, sensors run at 1 Hz without synchronization.</p>
+    <p class="fragment local-round-async" data-fragment-index="4">The model does not require global lock-step.</p>
   </div>
 
 {{< local-round-loop >}}
@@ -369,7 +369,7 @@ The particle cloud follows the target while keeping the estimation error visible
 </div>
 
 {{< meta-note >}}
-<strong>Intuition:</strong> more neighbours provide richer local observations, so the aggregated measurement becomes more informative; with few neighbours, the estimate remains weaker and less stable.
+<strong>Intuition:</strong> more neighbors provide richer local observations, so the aggregated measurement becomes more informative; with few neighbors, the estimate remains weaker and less stable.
 {{< /meta-note >}}
 
 ---
@@ -527,7 +527,7 @@ The particle cloud follows the target while keeping the estimation error visible
     </div>
     <div class="takeaway-line is-critical">
       <span>-</span>
-      <p><strong>Fusion can self-heal.</strong> Leader election preserves fusion-center behaviour after failures.</p>
+      <p><strong>Fusion can self-heal.</strong> Leader election preserves fusion-center behavior after failures.</p>
     </div>
   </div>
   <div class="future-panel">
