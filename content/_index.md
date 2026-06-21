@@ -31,7 +31,7 @@ Alma Mater Studiorum -- University of Bologna - Cesena, Italy*</span>
 
 <div class="motivation-layout">
   <div class="motivation-copy">
-    <p>Many cyber-physical systems must estimate a <strong>hidden dynamical state</strong> from distributed, noisy observations <small>[1]</small>.</p>
+    <p>Many cyber-physical systems must estimate a <strong>hidden dynamical state</strong> from distributed, noisy observations.</p>
     <div class="pattern-line is-left">
       <span>target tracking</span>
       <span>environmental monitoring</span>
@@ -48,10 +48,6 @@ Alma Mater Studiorum -- University of Bologna - Cesena, Italy*</span>
     <p><strong>Tracking intuition:</strong> sensors observe fragments of evidence; the system reconstructs the target trajectory.</p>
   </div>
 </div>
-
-{{< footer >}}
-[1] O. Hlinka, F. Hlawatsch, and P. M. Djuric, "Distributed particle filtering in agent networks: A survey, classification, and comparison," IEEE Signal Process. Mag., 2013.
-{{< /footer >}}
 
 ---
 
@@ -96,7 +92,7 @@ Alma Mater Studiorum -- University of Bologna - Cesena, Italy*</span>
 
 <div class="pf-layout">
   <div class="pf-copy">
-    <p>A particle filter represents belief with a <strong>cloud of weighted hypotheses</strong> <small>[2]</small>.</p>
+    <p>A particle filter represents belief with a <strong>cloud of weighted hypotheses</strong>.</p>
     <div class="takeaway-line">
       <span>01</span>
       <p>Each particle is one possible state.</p>
@@ -242,8 +238,8 @@ The particle cloud follows the target while keeping the estimation error visible
     <img src="./images/acDevices.svg">
   </div>
   <div class="ac-copy">
-      <p>Aggregate Computing lets developers describe the <strong>collective behavior</strong> of a system, rather than programming each device separately <small>[3]</small>.</p>
-    <p>The program manipulates <strong>computational fields</strong>: distributed values evolving across the network <small>[4]</small>.</p>
+    <p>Aggregate Computing lets developers describe the <strong>collective behavior</strong> of a system, rather than programming each device separately.</p>
+    <p>The program manipulates <strong>computational fields</strong>: distributed values evolving across the network.</p>
   </div>
 </div>
 
@@ -257,11 +253,6 @@ The particle cloud follows the target while keeping the estimation error visible
 {{< meta-note >}}
 **Key intuition:** devices execute local code, but the programmer reasons in terms of global coordination patterns.
 {{< /meta-note >}}
-
-{{< footer >}}
-[3] J. Beal, D. Pianini, and M. Viroli, "Aggregate programming for the internet of things," Computer, 2015.<br>
-[4] G. Audrito, M. Viroli, F. Damiani, D. Pianini, and J. Beal, "A higher-order calculus of computational fields," ACM Trans. Comput. Log., 2019.
-{{< /footer >}}
 
 ---
 
@@ -323,6 +314,8 @@ The particle cloud follows the target while keeping the estimation error visible
 
 {{% /col %}}
 {{% /multicol %}}
+
+
 
 ---
 
@@ -390,7 +383,7 @@ The particle cloud follows the target while keeping the estimation error visible
 
 <div class="healing-layout">
   <div class="takeaway-editorial">
-    <h2>Leader-based fusion as a field-level behavior <small>[5] [6]</small></h2>
+    <h2>Leader-based fusion as a field-level behavior</h2>
     <div class="takeaway-line">
       <span>01</span>
       <p><strong>Election.</strong> A leader is selected dynamically.</p>
@@ -413,11 +406,6 @@ The particle cloud follows the target while keeping the estimation error visible
   </div>
 </div>
 
-{{< footer >}}
-[5] M. Viroli, G. Audrito, J. Beal, F. Damiani, and D. Pianini, "Engineering resilient collective adaptive systems by self-stabilisation," ACM Trans. Model. Comput. Simul., 2018.<br>
-[6] D. Pianini, R. Casadei, and M. Viroli, "Self-stabilising priority-based multi-leader election and network partitioning," ACSOS, 2022.
-{{< /footer >}}
-
 ---
 
 # Experimental Evaluation
@@ -432,8 +420,8 @@ The particle cloud follows the target while keeping the estimation error visible
       <span class="metric-pill">3000 simulated seconds</span>
       <span class="metric-pill">100 seeds</span>
     </div>
-    <p>Each sensor observes the target through a radio-like signal: closer targets produce stronger, cleaner evidence; farther targets produce weaker and noisier evidence <small>[7] [8]</small>.</p>
-    <p>Simulations are implemented in Alchemist<small>[7]</small>, with aggregate program written using Collektive <small>[8]</small>.</p>
+    <p>Each sensor observes the target through a radio-like signal: closer targets produce stronger, cleaner evidence; farther targets produce weaker and noisier evidence.</p>
+    <p>Not all sensors are equally informative at every time step.</p>
   </div>
   <div class="eval-configs">
     <h3>Evaluated configurations</h3>
@@ -449,11 +437,6 @@ The particle cloud follows the target while keeping the estimation error visible
 </div>
 
 <img alt="experiment setup" src="./images/experiment.gif" width="30%"/>
-
-{{< footer >}}
-[7] D. Pianini, S. Montagna, and M. Viroli, "Chemical-oriented simulation of computational systems with alchemist," Journal of Simulation, 2013.
-[8] A. Cortecchia, "Multiplatform self-organizing systems through a KotlinMP implementation of aggregate computing," ACSOS Companion, 2024.<br>
-{{< /footer >}}
 
 ---
 
