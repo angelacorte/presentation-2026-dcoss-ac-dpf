@@ -122,10 +122,6 @@ Alma Mater Studiorum -- University of Bologna - Cesena, Italy*</span>
 In IoT, particle filtering is not only an estimation problem: it is a **coordination problem**.
 {{< /meta-note >}}
 
-{{< footer >}}
-[2] M. S. Arulampalam, S. Maskell, N. J. Gordon, and T. Clapp, "A tutorial on particle filters for online nonlinear/non-gaussian bayesian tracking," IEEE Trans. Signal Process., 2002.
-{{< /footer >}}
-
 ---
 
 # Particle Filter Over Time
