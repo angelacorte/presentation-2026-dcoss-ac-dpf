@@ -410,9 +410,10 @@ The particle cloud follows the target while keeping the estimation error visible
   <div class="eval-main">
     <h3>Scenario</h3>
     <div class="metric-band">
+      <span class="metric-pill">Alchemist Simulator</span>
+      <span class="metric-pill">Collektive DSL</span>
       <span class="metric-pill">2D target tracking</span>
       <span class="metric-pill">25 sensors</span>
-      <span class="metric-pill">1 Hz, unsynchronized</span>
       <span class="metric-pill">3000 simulated seconds</span>
       <span class="metric-pill">100 seeds</span>
     </div>
